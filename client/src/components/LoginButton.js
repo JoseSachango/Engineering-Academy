@@ -14,4 +14,7 @@ const LoginButton = ()=>{
 }
 
 
+module.exports = LoginButton
+
+
 
