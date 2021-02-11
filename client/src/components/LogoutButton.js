@@ -4,14 +4,14 @@ import Button from '@material-ui/core/Button';
 
 
 
-const LoginButton = (props)=>{
+const LogoutButton = (props)=>{
     const {loginWithRedirect,logout,isAuthenticated} = useAuth0();
 
     return(
        
-            isAuthenticated && (
-                <Button className={props.className} target={props.target} color={props.color} onClick={()=>logout()}>
-                    Log Out
+            !isAuthenticated && (
+                <Button className={props.className} target={props.target} color={props.color} onClick={()=>loginWithRedirect()}>
+                    Log in/Sign up
                 </Button>
 
             )
@@ -22,7 +22,4 @@ const LoginButton = (props)=>{
        
 }
 
-export default LoginButton
-
-
-
+export default LogoutButton
