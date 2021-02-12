@@ -4,7 +4,9 @@ import "./App.css";
 import LoginButton from "./components/LoginButton"
 import LandingPage from "./components/LandingPage"
 import DocumentationExperiment from "./components/DocumentationExperiment"
+//import DashboardExperiments from "./components/DashboardExperiments"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Mydashboard from "./mycomponents/myDashboard"
 
 
 function App() {
@@ -16,7 +18,9 @@ function App() {
             <Switch>
               <Route exact path={["/"]}>
                 <DocumentationExperiment/>
+                <Mydashboard />
               </Route>
+             
             </Switch>
           </div>
         </Router>

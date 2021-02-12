@@ -55,7 +55,6 @@ export default function HeaderLinks(props) {
         />
       </ListItem>
       <ListItem className={classes.listItem}>
-        
         <LoginButton 
           color="transparent"
           target="_blank"
