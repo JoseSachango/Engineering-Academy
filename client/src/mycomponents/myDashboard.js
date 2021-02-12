@@ -14,9 +14,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
+import User from '@material-ui/icons/Person';
+
 import Dashboard from '@material-ui/icons/Dashboard'
 import Book from '@material-ui/icons/MenuBook'
 import MenuIcon from '@material-ui/icons/Menu';
+import Table from '@material-ui/icons/TableChart'
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
@@ -32,6 +35,10 @@ import SendIcon from '@material-ui/icons/Send';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Fade from '@material-ui/core/Fade';
+import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 240;
 
@@ -87,7 +94,7 @@ const Mydashboard = (props) => {
             const classes = useStyles();
             const theme = useTheme();
             const [mobileOpen, setMobileOpen] = React.useState(false);
-            const [open, setOpen] = React.useState(true);
+            const [open, setOpen] = React.useState(false);
 
             const handleClick = () => {
                 setOpen(!open);
@@ -99,27 +106,12 @@ const Mydashboard = (props) => {
 
             const sidebarIcons = {
                 Dashboard: <Dashboard/>,
-                Course : <Book/>
+                Course : <Book/>,
+                Tables: <Table />
             }
 
             
-            const CollapseText = (arg1) => {
-                return(
-                    <>
-                      
-                        <Collapse in={open} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                            <ListItem button className={classes.nested}>
-                                <ListItemIcon>
-                                <StarBorder />
-                                </ListItemIcon>
-                                <ListItemText primary="Starred" />
-                            </ListItem>
-                            </List>
-                        </Collapse>
-                    </>
-                )
-            }
+           
             
 
             
@@ -129,7 +121,7 @@ const Mydashboard = (props) => {
                 <div className={classes.toolbar} />
                 <Divider />
                 <List>
-                  {['Dashboard', 'Course', 'Send email', 'Drafts'].map((text, index) => (
+                  {['Dashboard', 'Course', 'Tables', 'Practice',"PFD"].map((text, index) => (
                     <>
                         {text==="Course"? (
                             <>
@@ -192,6 +184,7 @@ const Mydashboard = (props) => {
                     <CssBaseline />
                     <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
+                        <Grid container>
                         <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -201,9 +194,18 @@ const Mydashboard = (props) => {
                         >
                         <MenuIcon />
                         </IconButton>
+                        <Grid item sm={11}>
                         <Typography variant="h6" noWrap>
-                        Responsive drawer
+                        Dashboard
                         </Typography>
+
+                        </Grid>
+                        <Grid item sm={1} justify="flex-end">
+
+                        <User/>
+                        </Grid>
+
+                        </Grid>
                     </Toolbar>
                     </AppBar>
                     <nav className={classes.drawer} aria-label="mailbox folders">
