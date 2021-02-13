@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 //import AppBar from "@material-ui/core/AppBar";
 import AppBar from '@material-ui/core/AppBar';
+import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -28,17 +29,34 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 //import ListItem from '@material-ui/core/ListItem';
 //import ListItemIcon from '@material-ui/core/ListItemIcon';
 //import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
+//import Collapse from '@material-ui/core/Collapse';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
-import Menu from '@material-ui/core/Menu';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import Fade from '@material-ui/core/Fade';
-import Grid from '@material-ui/core/Grid';
+import MenuList from '@material-ui/core/MenuList';
+import Button from '@material-ui/core/Button';
+import ChartistGraph from 'react-chartist';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ShareIcon from '@material-ui/icons/Share';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import clsx from 'clsx';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import Avatar from '@material-ui/core/Avatar';
+import { red } from '@material-ui/core/colors';
 
 const drawerWidth = 240;
 
@@ -80,6 +98,39 @@ const useStyles = makeStyles((theme) => ({
     nested: {
         paddingLeft: theme.spacing(2),
       },
+    paper: {
+        marginRight: theme.spacing(2),
+      },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+          duration: theme.transitions.duration.shortest,
+        }),
+      },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+      },
+    avatar: {
+        backgroundColor: red[500],
+      },
+    card : {
+        maxWidth: 345
+    },
+    cardheader: {
+      borderRadius: "3px",
+      padding: "1rem 15px",
+      marginLeft: "15px",
+      marginRight: "15px",
+      marginTop: "0px",
+      border: "0",
+      marginBottom: "-30px",
+      background: "red",
+      width: 300
+    },
+    cardcontent:{
+      marginTop: "30px"
+    }
 }))
 
 
@@ -95,11 +146,84 @@ const Mydashboard = (props) => {
             const theme = useTheme();
             const [mobileOpen, setMobileOpen] = React.useState(false);
             const [open, setOpen] = React.useState(false);
+            
+            
 
             const handleClick = () => {
                 setOpen(!open);
             };
+
+           //--------------------------->MenuList functionality
+           const [openMenuList, setOpenMenuList] = React.useState(false);
+             const anchorRefMenuList = React.useRef(null);
+           const handleToggleMenuList = () => {
+            setOpenMenuList((prevOpen) => !prevOpen);
+          };
+        
+          const handleCloseMenuList = (event) => {
+            if (anchorRefMenuList.current && anchorRefMenuList.current.contains(event.target)) {
+              return;
+            }
+        
+            setOpenMenuList(false);
+          };
+        
+          function handleListKeyDownMenuList(event) {
+            if (event.key === 'Tab') {
+              event.preventDefault();
+              setOpenMenuList(false);
+            }
+          }
+        
+          // return focus to the button when we transitioned from !open -> open
+          const prevOpen = React.useRef(openMenuList);
+          React.useEffect(() => {
+            if (prevOpen.current === true && openMenuList === false) {
+              anchorRefMenuList.current.focus();
+            }
+        
+            prevOpen.current = openMenuList;
+          }, [openMenuList]);
+        
+
+
+
+
+           //---------------------------End of MenuList
+
+           //---------------------------Chart Information
+                var data = {
+                    labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'],
+                    series: [
+                    [1, 2, 4, 8, 6, -2, -1, -4, -6, -2]
+                    ]
+                };
+
+                var options = {
+                    high: 10,
+                    low: -10,
+                    axisX: {
+                      labelInterpolationFnc: function(value, index) {
+                        return index % 2 === 0 ? value : null;
+                      }
+                    }
+                  };
+              
+                  var type = 'Bar'
+
+
+
+
+           //---------------------------End of chart info 
+           //---------------------------Card with header functionality
+           const [expandedCard, setExpandedCard] = React.useState(false);
+
+            const handleExpandClickCard = () => {
+                setExpandedCard(!expandedCard);
+            };
+           //---------------------------End of card with header
           
+
             const handleDrawerToggle = () => {
               setMobileOpen(!mobileOpen);
             };
@@ -202,7 +326,41 @@ const Mydashboard = (props) => {
                         </Grid>
                         <Grid item sm={1} justify="flex-end">
 
-                        <User/>
+                            {/*MenuList*/}
+                                <Button
+                                ref={anchorRefMenuList}
+                                aria-controls={openMenuList ? 'menu-list-grow' : undefined}
+                                aria-haspopup="true"
+                                onClick={handleToggleMenuList}
+                                >
+                                   <User/>
+                                </Button>
+                                <Popper open={openMenuList} anchorEl={anchorRefMenuList.current} role={undefined} transition disablePortal>
+                                {({ TransitionProps, placement }) => (
+                                    <Grow
+                                    {...TransitionProps}
+                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                    >
+                                    <Paper>
+                                        <ClickAwayListener onClickAway={handleCloseMenuList}>
+                                        <MenuList autoFocusItem={openMenuList} id="menu-list-grow" onKeyDown={handleListKeyDownMenuList}>
+                                            <MenuItem onClick={handleCloseMenuList}>Profile</MenuItem>
+                                            <MenuItem onClick={handleCloseMenuList}>My account</MenuItem>
+                                            <MenuItem onClick={handleCloseMenuList}>Logout</MenuItem>
+                                        </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                    </Grow>
+                                )}
+                                </Popper>
+
+
+
+                            {/*MenuList end*/}
+                            
+                            
+                       
+                        
                         </Grid>
 
                         </Grid>
@@ -239,32 +397,93 @@ const Mydashboard = (props) => {
                         </Drawer>
                     </Hidden>
                     </nav>
+                    {/*Dashboard content*/}
                     <main className={classes.content}>
+                   
+                    
                     <div className={classes.toolbar} />
-                    <Typography paragraph>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                        ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                        facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                        gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                        donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                        adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                        Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                        imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                        arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                        donec massa sapien faucibus et molestie ac.
-                    </Typography>
-                    <Typography paragraph>
-                        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-                        facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-                        tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-                        consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-                        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-                        hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-                        tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-                        nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-                        accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-                    </Typography>
+                        <div>
+                            <Grid container>
+                                <Grid item sm={4}>
+                                    <ChartistGraph data={data} options={options} type={type} />
+                                </Grid>
+                                
+                            </Grid>
+                            <h1>Hello world</h1>
+                            <Grid container>
+                                    <Grid item >
+                                      <Paper elevation={3} className={classes.cardheader} >
+                                        Hello World
+                                      </Paper>
+                                     
+                                    </Grid>
+                            </Grid>
+                            <Card className={classes.card} >
+                                
+                               
+                                <CardMedia
+                                    className={classes.media}
+                                    image= "../../components/DocumentationExperiment/assets/img/AmineTreatingPFD.png"
+                                    title="Paella dish"
+                                />
+                                <CardContent className={classes.cardcontent}>
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                    This impressive paella is a perfect party dish and a fun meal to cook together with your
+                                    guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                                    </Typography>
+                                </CardContent>
+                                <CardActions disableSpacing>
+                                    <IconButton aria-label="add to favorites">
+                                    <FavoriteIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="share">
+                                    <ShareIcon />
+                                    </IconButton>
+                                    <IconButton
+                                    className={clsx(classes.expand, {
+                                        [classes.expandOpen]: expandedCard,
+                                    })}
+                                    onClick={handleExpandClickCard}
+                                    aria-expanded={expandedCard}
+                                    aria-label="show more"
+                                    >
+                                    <ExpandMoreIcon />
+                                    </IconButton>
+                                </CardActions>
+                                <Collapse in={expandedCard} timeout="auto" unmountOnExit>
+                                    <CardContent>
+                                    <Typography paragraph>Method:</Typography>
+                                    <Typography paragraph>
+                                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
+                                        minutes.
+                                    </Typography>
+                                    <Typography paragraph>
+                                        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
+                                        heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
+                                        browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
+                                        and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
+                                        pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
+                                        saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+                                    </Typography>
+                                    <Typography paragraph>
+                                        Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
+                                        without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
+                                        medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
+                                        again without stirring, until mussels have opened and rice is just tender, 5 to 7
+                                        minutes more. (Discard any mussels that don’t open.)
+                                    </Typography>
+                                    <Typography>
+                                        Set aside off of the heat to let rest for 10 minutes, and then serve.
+                                    </Typography>
+                                    </CardContent>
+                                </Collapse>
+                            </Card>
+                         
+                        </div>
+
                     </main>
+                    {/*Dashboard content*/}
+                   
                 </div>
                 )
             );
