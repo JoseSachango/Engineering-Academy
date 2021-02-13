@@ -45,6 +45,7 @@ import MenuList from '@material-ui/core/MenuList';
 import Button from '@material-ui/core/Button';
 import ChartistGraph from 'react-chartist';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import { grey } from '@material-ui/core/colors';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -57,6 +58,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import { red } from '@material-ui/core/colors';
+import Revenue from '@material-ui/icons/AccountBalance'
 
 const drawerWidth = 240;
 
@@ -124,12 +126,13 @@ const useStyles = makeStyles((theme) => ({
       marginRight: "15px",
       marginTop: "0px",
       border: "0",
-      marginBottom: "-30px",
+      marginBottom: "-40px",
       background: "red",
-      width: 300
+      width: 100,
+      textAlign: 'center'
     },
     cardcontent:{
-      marginTop: "30px"
+      marginTop: "40px"
     }
 }))
 
@@ -412,8 +415,8 @@ const Mydashboard = (props) => {
                             <h1>Hello world</h1>
                             <Grid container>
                                     <Grid item >
-                                      <Paper elevation={3} className={classes.cardheader} >
-                                        Hello World
+                                      <Paper  elevation={3} className={classes.cardheader} >
+                                          <Revenue style={{ color: grey[50] }}/>
                                       </Paper>
                                      
                                     </Grid>
@@ -432,6 +435,7 @@ const Mydashboard = (props) => {
                                     guests. Add 1 cup of frozen peas along with the mussels, if you like.
                                     </Typography>
                                 </CardContent>
+                                <Divider />
                                 <CardActions disableSpacing>
                                     <IconButton aria-label="add to favorites">
                                     <FavoriteIcon />
