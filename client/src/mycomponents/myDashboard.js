@@ -59,6 +59,29 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import { red } from '@material-ui/core/colors';
 import Revenue from '@material-ui/icons/AccountBalance'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import PhoneIcon from '@material-ui/icons/Phone';
+//import FavoriteIcon from '@material-ui/icons/Favorite';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
+import HelpIcon from '@material-ui/icons/Help';
+import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
+import ThumbDown from '@material-ui/icons/ThumbDown';
+import ThumbUp from '@material-ui/icons/ThumbUp';
+//import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+//import Paper from '@material-ui/core/Paper';
+
+import {
+  Chart,
+  ArgumentAxis,
+  ValueAxis,
+  BarSeries,
+  LineSeries,
+  Legend,
+} from '@devexpress/dx-react-chart-material-ui';
+
+import { ValueScale } from '@devexpress/dx-react-chart';
 
 const drawerWidth = 240;
 
@@ -85,9 +108,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
+    toolbar:
+      theme.mixins.toolbar
+    ,
     drawerPaper: {
       width: drawerWidth,
+     
     },
     content: {
       flexGrow: 1,
@@ -126,13 +152,63 @@ const useStyles = makeStyles((theme) => ({
       marginRight: "15px",
       marginTop: "0px",
       border: "0",
-      marginBottom: "-40px",
+      marginBottom: "-60px",
       background: "red",
       width: 100,
-      textAlign: 'center'
+      textAlign: 'center',
+      height: "75px"
+    },
+    cardheader2: {
+      borderRadius: "3px",
+      padding: "1rem 15px",
+      marginLeft: "15px",
+      marginRight: "15px",
+      marginTop: "0px",
+      border: "0",
+      marginBottom: "-60px",
+      background: "red",
+      width: 300,
+      textAlign: 'center',
+      height: "75px"
     },
     cardcontent:{
-      marginTop: "40px"
+      marginTop: "5px",
+      textAlign: 'right',
+      
+    },
+    cardtitle:{
+      fontSize: 30
+    },
+    chart:{
+      marginTop: "50px",
+      marginBottom: "70px",
+     
+    },
+    chart2:{
+      width:300,
+      height: 100,
+      borderRadius: "3px",
+      padding: "1rem 15px",
+      marginLeft: "15px",
+      marginRight: "15px",
+      marginTop: "0px",
+      border: "0",
+      marginBottom: "-60px",
+      background: "red",
+      width: 300,
+      textAlign: 'center',
+      height: "75px"
+    },
+    tabs:{
+       
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+      
+    },
+    chart3:{
+      marginTop: "50px",
+      marginBottom: "50px"
     }
 }))
 
@@ -149,6 +225,11 @@ const Mydashboard = (props) => {
             const theme = useTheme();
             const [mobileOpen, setMobileOpen] = React.useState(false);
             const [open, setOpen] = React.useState(false);
+            const [valueTabs, setValueTabs] = React.useState(0);
+
+            const handleChangeTabs = (event, newValue) => {
+              setValueTabs(newValue);
+            };
             
             
 
@@ -195,7 +276,7 @@ const Mydashboard = (props) => {
            //---------------------------End of MenuList
 
            //---------------------------Chart Information
-                var data = {
+                var data1 = {
                     labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'],
                     series: [
                     [1, 2, 4, 8, 6, -2, -1, -4, -6, -2]
@@ -213,6 +294,41 @@ const Mydashboard = (props) => {
                   };
               
                   var type = 'Bar'
+
+                  //------------------------New chart data
+                  const data = [
+                    { argument: 1, value: 10 },
+                    { argument: 2, value: 20 },
+                    { argument: 3, value: 30 },
+                  ];
+                  const data3 = [
+                    { argument: 1, value: 1 },
+                    { argument: 2, value: 2 },
+                    { argument: 3, value: 3 },
+                  ];
+
+                  //------------------------
+
+
+
+
+
+
+
+                  //-------------------------------New chart data2
+                  const dataObject = {
+                    data: [
+                      { month: 'Jan', sale: 50, total: 987 },
+                      { month: 'Feb', sale: 100, total: 3000 },
+                      { month: 'March', sale: 30, total: 1100 },
+                      { month: 'April', sale: 107, total: 7100 },
+                      { month: 'May', sale: 95, total: 4300 },
+                      { month: 'June', sale: 150, total: 7500 },
+                    ],
+                  };
+                
+                const { data: chartData } = dataObject;
+                  //----------------------------------
 
 
 
@@ -236,6 +352,41 @@ const Mydashboard = (props) => {
                 Course : <Book/>,
                 Tables: <Table />
             }
+
+
+
+
+            //-----------------------------------------Chart tabs functions and data
+
+            function TabPanel(props) {
+              const { children, value, index, ...other } = props;
+            
+              return (
+                <div
+                  role="tabpanel"
+                  hidden={value !== index}
+                  id={`scrollable-force-tabpanel-${index}`}
+                  aria-labelledby={`scrollable-force-tab-${index}`}
+                  {...other}
+                >
+                  {value === index && (
+                    <Box p={3}>
+                      <Typography>{children}</Typography>
+                    </Box>
+                  )}
+                </div>
+              );
+              }
+           
+            
+              
+              function a11yProps(index) {
+                return {
+                  id: `scrollable-force-tab-${index}`,
+                  'aria-controls': `scrollable-force-tabpanel-${index}`,
+                };
+              }
+            //-----------------------------------------Chart tabs end
 
             
            
@@ -406,13 +557,8 @@ const Mydashboard = (props) => {
                     
                     <div className={classes.toolbar} />
                         <div>
-                            <Grid container>
-                                <Grid item sm={4}>
-                                    <ChartistGraph data={data} options={options} type={type} />
-                                </Grid>
-                                
-                            </Grid>
-                            <h1>Hello world</h1>
+                          
+                           
                             <Grid container>
                                     <Grid item >
                                       <Paper  elevation={3} className={classes.cardheader} >
@@ -429,12 +575,24 @@ const Mydashboard = (props) => {
                                     image= "../../components/DocumentationExperiment/assets/img/AmineTreatingPFD.png"
                                     title="Paella dish"
                                 />
-                                <CardContent className={classes.cardcontent}>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                    This impressive paella is a perfect party dish and a fun meal to cook together with your
-                                    guests. Add 1 cup of frozen peas along with the mussels, if you like.
-                                    </Typography>
-                                </CardContent>
+                                <Grid container>
+
+                                      <Grid item sm={6}>
+
+                                      </Grid>
+                                      <Grid item sm={6}>
+                                            <CardContent className={classes.cardcontent}>
+                                              <Typography  variant="body2" color="textSecondary" component="p">
+                                              Revenue
+                                              </Typography>
+                                              <Typography className={classes.cardtitle} variant="body2" color="textSecondary" component="p">
+                                                $34,000
+                                              </Typography>
+                                          </CardContent>
+                                      </Grid>
+                             
+                                </Grid>
+                              
                                 <Divider />
                                 <CardActions disableSpacing>
                                     <IconButton aria-label="add to favorites">
@@ -482,6 +640,121 @@ const Mydashboard = (props) => {
                                     </CardContent>
                                 </Collapse>
                             </Card>
+                              {/*Chart content*/}
+                                <Paper className={classes.chart}>
+                                  <Chart
+                                    data={data}
+                                  >
+                                    <ArgumentAxis />
+                                    <ValueAxis />
+
+                                    <LineSeries valueField="value" argumentField="argument" />
+                                  </Chart>
+                                </Paper>
+                              {/*Chart content end*/}
+                            
+                            
+                              {/* 3rd chart */}
+                                <Paper className={classes.chart3}>
+                                  <Chart
+                                    data={chartData}
+                                  >
+                                    <ValueScale name="sale" />
+                                    <ValueScale name="total" />
+
+                                    <ArgumentAxis />
+                                    <ValueAxis scaleName="sale" showGrid={false} showLine showTicks />
+                                    <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
+
+                                    <BarSeries
+                                      name="Units Sold"
+                                      valueField="sale"
+                                      argumentField="month"
+                                      scaleName="sale"
+                                    />
+
+                                    <LineSeries
+                                      name="Total Transactions"
+                                      valueField="total"
+                                      argumentField="month"
+                                      scaleName="total"
+                                    />
+
+                                    <Legend />
+                                  </Chart>
+                                </Paper>
+                              {/*3rd chart end */}
+                              {/*Chart tabs */}
+                                <div className={classes.tabs}>
+                                  <AppBar position="static" color="default">
+                                    <Tabs
+                                      value={valueTabs}
+                                      onChange={handleChangeTabs}
+                                      variant="scrollable"
+                                      scrollButtons="on"
+                                      indicatorColor="primary"
+                                      textColor="primary"
+                                      aria-label="scrollable force tabs example"
+                                    >
+                                      <Tab label="Chart One" icon={<PhoneIcon />} {...a11yProps(0)} />
+                                      <Tab label="Chart Two" icon={<FavoriteIcon />} {...a11yProps(1)} />
+                                      <Tab label="Chart Three" icon={<PersonPinIcon />} {...a11yProps(2)} />
+                                      <Tab label="Chart Four" icon={<HelpIcon />} {...a11yProps(3)} />
+                                      <Tab label="Chart Five" icon={<ShoppingBasket />} {...a11yProps(4)} />
+                                      <Tab label="Chart Six" icon={<ThumbDown />} {...a11yProps(5)} />
+                                      <Tab label="Chart Seven" icon={<ThumbUp />} {...a11yProps(6)} />
+                                    </Tabs>
+                                  </AppBar>
+                                  <TabPanel value={valueTabs} index={0}>
+                                      <Paper elevation={3} className={classes.chart3}>
+                                        <Chart
+                                          data={chartData}
+                                        >
+                                          <ValueScale name="sale" />
+                                          <ValueScale name="total" />
+
+                                          <ArgumentAxis />
+                                          <ValueAxis scaleName="sale" showGrid={false} showLine showTicks />
+                                          <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
+
+                                          <BarSeries
+                                            name="Units Sold"
+                                            valueField="sale"
+                                            argumentField="month"
+                                            scaleName="sale"
+                                          />
+
+                                          <LineSeries
+                                            name="Total Transactions"
+                                            valueField="total"
+                                            argumentField="month"
+                                            scaleName="total"
+                                          />
+
+                                          <Legend />
+                                        </Chart>
+                                      </Paper>
+                                  </TabPanel>
+                                  <TabPanel value={valueTabs} index={1}>
+                                    Item Two
+                                  </TabPanel>
+                                  <TabPanel value={valueTabs} index={2}>
+                                    Item Three
+                                  </TabPanel>
+                                  <TabPanel value={valueTabs} index={3}>
+                                    Item Four
+                                  </TabPanel>
+                                  <TabPanel value={valueTabs} index={4}>
+                                    Item Five
+                                  </TabPanel>
+                                  <TabPanel value={valueTabs} index={5}>
+                                    Item Six
+                                  </TabPanel>
+                                  <TabPanel value={valueTabs} index={6}>
+                                    Item Seven
+                                  </TabPanel>
+                                </div>
+                              {/*Char tabs end */}
                          
                         </div>
 
