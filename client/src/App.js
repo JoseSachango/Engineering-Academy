@@ -7,6 +7,8 @@ import DocumentationExperiment from "./components/DocumentationExperiment"
 //import DashboardExperiments from "./components/DashboardExperiments"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Mydashboard from "./mycomponents/myDashboard"
+import ChemProCourse from "./mycomponents/ChemProCourse"
+import Chapter from "./mycomponents/Chapter"
 
 
 function App() {
@@ -17,8 +19,14 @@ function App() {
            
             <Switch>
               <Route exact path={["/"]}>
-                <DocumentationExperiment/>
+                {/*<DocumentationExperiment/>*/}
                 <Mydashboard />
+              </Route>
+              <Route exact path={["/ChemProCourse"]}>
+                <ChemProCourse />
+              </Route>
+              <Route exact path={["/ChemProCourse/Chapter1"]}>
+                <Chapter />
               </Route>
              
             </Switch>
