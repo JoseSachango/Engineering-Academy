@@ -56,9 +56,30 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import FolderIcon from '@material-ui/icons/Folder';
 import RestoreIcon from '@material-ui/icons/Restore';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import MathJax from 'react-mathjax2'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 
-
+const theme = createMuiTheme({
+    typography: {
+     
+      h7: {
+        fontWeight: 1000,
+      
+      },
+  
+    },
+  });
+  
 
 
 
@@ -68,6 +89,10 @@ const drawerWidth = 500;
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
+    },
+    nextExercise:{
+        marginTop: "70px",
+        marginBottom: "50px"
     },
     column1:{
         marginLeft: "5px",
@@ -86,6 +111,11 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "20px",
         marginBottom: "20px"
     },
+    drawercontentEquations:{
+       marginLeft: "100px",
+       justifyContent: "center"
+    },
+
     drawercontentIns:{
         width: "100%"
     },
@@ -113,7 +143,22 @@ const defaultProps = {
     style: { width: '5rem', height: '5rem' },
     borderColor: 'text.primary',
   };
-//--------------------------Border default
+//--------------------------Border default end
+
+//---------------------------Checkbox
+const GreenCheckbox = withStyles({
+    root: {
+    color: green[400],
+    '&$checked': {
+        color: green[600],
+    },
+    },
+    checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+//-----------------------------Checkbox end
+
+
+
 
 const Chapter = () =>{
 
@@ -123,7 +168,12 @@ const Chapter = () =>{
     const [progress, setProgress] = React.useState(10);
     const {loginWithRedirect,logout,isAuthenticated} = useAuth0();
     const [value, setValue] = React.useState('recents');
-
+    //-------------------------------------------------
+    const ascii = 'U = 1/(R_(si) + sum_(i=1)^n(s_n/lambda_n) + R_(se))'
+    const ascii2 = 'U = 1/(R_(si) + sum_(i=1)^n(s_n/lambda_n) + R_(se))'
+    const content = `This can be dynamic text (e.g. user-entered) text with ascii math embedded in $$ symbols like $$ $$ ${ascii} $$`
+    const tex = `f(x) = \\int_{-\\infty}^\\infty\\hat f(\\xi)\\,e^{2 \\pi i \\xi x}\\,d\\xi`
+    //-------------------------------------------------
 
     //-------------------------------Bottom navigation
     const handleChange = (event, newValue) => {
@@ -209,8 +259,21 @@ const Chapter = () =>{
         </Menu>
       );
 
-    //------------------------------
-    //------------------------------
+    //------------------------------Checkbox 
+
+
+        const [state, setState] = React.useState({
+            checkedA: false,
+            checkedB: false,
+            checkedF: false,
+            checkedG: false,
+          });
+        
+          const handleChangeCheckbox = (event) => {
+            setState({ ...state, [event.target.name]: event.target.checked });
+          };
+        
+    //------------------------------Checkbox end
     
 
 
@@ -270,71 +333,130 @@ const Chapter = () =>{
                    Units and Dimensions
                 </Typography>
                 <Typography paragraph  className={classes.drawercontent}>
-                    Chemical engineers work in a variety of fields and therefore problems they encounter can range 
-                    from bioengineering  to .. we're starting off with units and dimensions because it's the 
-                    foundation for solving a wide set of problems in chemical enigeering.........
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                    facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                    gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                    donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                    Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                    imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                    arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                    donec massa sapien faucibus et molestie ac.
+                    Chemical engineers work in a variety of fields and are responsible for tackling a wide range of problems. Normally these problems involve 
+                    turning some sort of raw material, like crude oil, into desired products like gasoline. That being said, the 
+                    fundamental techniques for solving most of these problems aren't all that different. Therefore, 
+                    In this section we start by focusing on the fundamentals, namely units. Understanding units builds the groundwork for 
+                    tackling more advanced chemical engineering problems.
+                    
                 </Typography>
                 <Typography paragraph  className={classes.drawercontent}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                    facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                    gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                    donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                    Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                    imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                    arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                    donec massa sapien faucibus et molestie ac.
+                    Any quantity that's measured or counted has a numerical value(lets say 2.47) and a unit (whatever there are 2.47 of). 
+                    Together they are written in the following format: 
+                    <Grid container justify="center">
+                        <Typography paragraph  className={classes.drawercontent}>
+                        
+                                        
+                        2 meters, 1/3 seconds, 4.39 kilograms, 5 gold rings
+                                    
+                                    
+                        </Typography>
+                    </Grid>
+                    Dimensions are properties that can be measured such as length, or time and measureable units 
+                    (as opposed to countable units) are values of dimensions that have been predefined by law, 
+                    custom or convetion. For example, grams for mass, or seconds for time.
                 </Typography>
+                <Typography paragraph  className={classes.drawercontent}>
+                  Units are treated like variables when quantities are added, substracted, multiplied, or divided. The rule is that the numerical
+                  values of two quantities can only be added or subtracted if the units are the same. However, numerical values of two quantities can always 
+                  be combined by multiplication or division.
+                              
+                </Typography>
+                <Grid container justify="center">
+                    <Typography paragraph  className={classes.drawercontent}>
+                    
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                <MathJax.Node inline>{'3N * 4m = 12N*m'}</MathJax.Node>
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                                
+                                
+                                
+                    </Typography>
+                </Grid>
+                <Grid container justify="center">
+                    <Typography paragraph className={classes.drawercontent}>
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                    <MathJax.Node inline>{'(5km) / (2h) = (2.5km)/h'}</MathJax.Node>
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                    </Typography>
+                </Grid>
+                <Grid container justify="center">
+                    <Typography paragraph className={classes.drawercontent}>
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div>
+                                            
+                                                    <MathJax.Node inline>{'7((km)/h)*4h = 28km'}</MathJax.Node>
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                    </Typography>
+                </Grid>
+                <Grid container justify="center">
+                    <Typography paragraph className={classes.drawercontent}>
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                    <MathJax.Node inline>{'3m*4m = 12m^2'}</MathJax.Node>
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                    </Typography>
+                </Grid>
                 <Grid container alignItems="center" >
                     <Grid item sm={12}>
                         <Paper elevation={0}  className={classes.drawercontentIns} style={{ height: 45, backgroundColor: grey[100]}}>
-                            <Typography paragraph className={classes.typography}>
+                        <ThemeProvider theme={theme}>
+                            <Typography paragraph className={classes.typography} >
                                 Instructions
                             </Typography>
+                        </ThemeProvider>
                         </Paper>
                     </Grid>
                 </Grid>
                 <Typography paragraph  className={classes.drawercontent}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                    facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                    gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                    donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                    Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                    imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                    arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                    donec massa sapien faucibus et molestie ac.
+
+                    <FormControlLabel
+                        control={<GreenCheckbox checked={state.checkedG} onChange={handleChangeCheckbox} name="checkedG" />}
+                        label="Solve the equations in the terminal"
+                    />
+                   
                 </Typography>
                 
-                <List>
-                  {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                      <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItem>
-                  ))}
-                </List>
+
+                <Grid container className={classes.nextExercise} >
+                    <Grid item sm={6}>
+                        <Grid container justify="center">
+                        <Button variant="outlined" color="primary">
+                            Back
+                        </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid item sm={6}>
+                        <Grid container justify="center">
+                        <Button variant="outlined" color="secondary">
+                            Next
+                        </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
                 <Divider />
-                <List>
-                  {['All mail', 'Trash', 'Spam',"pig","cat","rat","hat","dog","frog","bog","hard","soft"].map((text, index) => (
-                    <ListItem button key={text}>
-                      <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItem>
-                  ))}
-                </List>
+                
               </div>
             </Drawer>
             <main className={classes.content}>
@@ -343,7 +465,51 @@ const Chapter = () =>{
                     <Grid container >
                         <Grid item sm={6}>
                             <Paper className={classes.column1} borderRight={1} elevation={0} style={{ height: 1000, backgroundColor: grey[100]}}>
+
+                                <MathJax.Context
+                                    input='ascii'
+                                    onLoad={ () => console.log("Loaded MathJax script!") }
+                                    onError={ (MathJax, error) => {
+                                        console.warn(error);
+                                        console.log("Encountered a MathJax error, re-attempting a typeset!");
+                                        MathJax.Hub.Queue(
+                                        MathJax.Hub.Typeset()
+                                        );
+                                    } }
+                                    script="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=AM_HTMLorMML"
+                                    options={ {
+                                        asciimath2jax: {
+                                            useMathMLspacing: true,
+                                            delimiters: [["$$","$$"]],
+                                            preview: "none",
+                                        }
+                                    } }
+                                >
+                                    <MathJax.Text text={ content }/>
+                                    
+
+                                </MathJax.Context>
+
+                                <div>
+                                    <MathJax.Context input='ascii'>
+                                        <div>
+                                            This is an inline formula written in AsciiMath: <MathJax.Node inline>{ ascii2 }</MathJax.Node>
+                                        </div>
+                                    </MathJax.Context>
+                                </div>
+
+                                <div>
+                                    <MathJax.Context input='tex'>
+                                        <div>
+                                            This is an inline math formula: <MathJax.Node inline>{'a = b'}</MathJax.Node>
+                                        </div>
+                                    </MathJax.Context>
+                                </div>
+
+                            
                             <Typography paragraph>
+                                In here create some sort of interactive activity based on the instructions found in the drawer.
+                                Try a draggable ven diagramm where you have to place words in the right spaces......On the nav have a section to where you can up a notes drawer coming from the right of the page.........
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                                 ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
                                 facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit

@@ -26,6 +26,38 @@ import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 import CardTemplateP from "./CardTemplateProgress"
 import { Link } from "react-router-dom";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+
+
+
+const theme = createMuiTheme({
+  typography: {
+   
+    h4: {
+      fontWeight: 1000,
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h5:{
+      fontWeight: 1000,
+      fontFamily: [
+        'Arial',
+      ].join(','),
+    }
+
+  },
+});
+
 
 
 
@@ -314,9 +346,12 @@ export default function ChemProCourse() {
                               
                              <Grid item>
                                <Grid container  container justify="center" alignItems="center" direction="row">
-                               <Typography  style={{color: grey[50], fontSize: '50px'}} variant="h4" >
-                                  Chemical Processes
-                                </Typography>
+                               <ThemeProvider theme={theme}>
+                                    <Typography  style={{color: grey[50], fontSize: '50px'}} variant="h4" >
+                                      Chemical Processes
+                                    </Typography>
+                               </ThemeProvider>
+                         
                                </Grid>
                                <Grid className={classes.banner2} container justify="center" alignItems="center" direction="row" >
                                <Button component={Link} to="/ChemProCourse/Chapter1" className={classes.button} variant="contained" color="primary" style={{ backgroundColor: yellow[400], color: grey[900]}} >
@@ -365,9 +400,11 @@ export default function ChemProCourse() {
                   <Grid container className={classes.container}>
                       <Grid item sm={7}>
                           <Grid container justify="center" direction="row" alignItems="center">
-                            <Typography style={{color: grey[900]}} variant="h5">
-                              1. Engineering Calculations:
-                            </Typography>
+                            <ThemeProvider theme={theme}>
+                              <Typography style={{color: grey[900]}} variant="h5">
+                                1. Engineering Calculations:
+                              </Typography>
+                            </ThemeProvider>  
                           </Grid>
                       </Grid>
                       <Grid item sm={5}>
