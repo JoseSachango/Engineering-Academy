@@ -19,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
+import NotesIcon from '@material-ui/icons/Notes';
 import ShareIcon from '@material-ui/icons/Share';
 import Divider from '@material-ui/core/Divider';
 import { Link } from "react-router-dom";
@@ -67,6 +68,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import TextField from '@material-ui/core/TextField';
 
 
 const theme = createMuiTheme({
@@ -90,10 +92,31 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
     },
+    list: {
+        width: 250,
+      },
+    fullList: {
+        width: 'auto',
+    },
+    courseNotes:{
+        width: "100%",
+        
+    },
+    courseNotes2:{
+        width: "100%",
+        height: 500
+    },
     nextExercise:{
         marginTop: "70px",
         marginBottom: "50px"
     },
+    answer: {
+        '& > *': {
+          margin: theme.spacing(1),
+          width: '20ch',
+          marginLeft:"20px"
+        },
+      },
     column1:{
         marginLeft: "5px",
         marginTop: "5px",
@@ -274,6 +297,57 @@ const Chapter = () =>{
           };
         
     //------------------------------Checkbox end
+
+    //-------------------------------DrawerTemporary
+    const [stateDrawer, setStateDrawer] = React.useState({
+        right: false,
+      });
+
+      const toggleDrawer = (anchor, open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+          return;
+        }
+    
+        setStateDrawer({ ...stateDrawer, [anchor]: open });
+      };
+
+      const list = (anchor) => (
+        <div
+          className={clsx(classes.list, {
+            [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+          })}
+          role="presentation"
+          onClick={toggleDrawer(anchor, false)}
+          onKeyDown={toggleDrawer(anchor, false)}
+        >
+          <List>
+            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      );
+    //-------------------------------DrawerTemporaryEnd
+
+    //-------------------------------TextArea
+    const [valueTextArea, setValueTextArea] = React.useState('Controlled');
+
+    const handleChangeTextArea = (event) => {
+      setValueTextArea(event.target.value);
+    };
+    //-------------------------------TextAreaEnd
     
 
 
@@ -293,10 +367,24 @@ const Chapter = () =>{
                             <Grid container  direction="row" justify="flex-end">
                                 {/*Search box */}
                              
+                                {/*
+                                    <IconButton aria-label="show 4 new mails" color="inherit">
+                                        <Badge badgeContent={4} color="secondary">
+                                            <MailIcon />
+                                        </Badge>
+                                    </IconButton>
+                                 */}
                               <IconButton aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={4} color="secondary">
-                                    <MailIcon />
-                                </Badge>
+                              <div>
+                                {['right'].map((anchor) => (
+                                    <React.Fragment key={anchor}>
+                                    <NotesIcon onClick={toggleDrawer(anchor, true)}/>
+                                    <Drawer anchor={anchor} open={stateDrawer[anchor]} onClose={toggleDrawer(anchor, false)}>
+                                        {list(anchor)}
+                                    </Drawer>
+                                    </React.Fragment>
+                                ))}
+                              </div>
                               </IconButton>
                               <IconButton aria-label="show 17 new notifications" color="inherit">
                                 <Badge badgeContent={17} color="secondary">
@@ -449,7 +537,7 @@ const Chapter = () =>{
                     </Grid>
                     <Grid item sm={6}>
                         <Grid container justify="center">
-                        <Button variant="outlined" color="secondary">
+                        <Button variant="outlined" color="secondary" disabled>
                             Next
                         </Button>
                         </Grid>
@@ -466,30 +554,8 @@ const Chapter = () =>{
                         <Grid item sm={6}>
                             <Paper className={classes.column1} borderRight={1} elevation={0} style={{ height: 1000, backgroundColor: grey[100]}}>
 
-                                <MathJax.Context
-                                    input='ascii'
-                                    onLoad={ () => console.log("Loaded MathJax script!") }
-                                    onError={ (MathJax, error) => {
-                                        console.warn(error);
-                                        console.log("Encountered a MathJax error, re-attempting a typeset!");
-                                        MathJax.Hub.Queue(
-                                        MathJax.Hub.Typeset()
-                                        );
-                                    } }
-                                    script="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=AM_HTMLorMML"
-                                    options={ {
-                                        asciimath2jax: {
-                                            useMathMLspacing: true,
-                                            delimiters: [["$$","$$"]],
-                                            preview: "none",
-                                        }
-                                    } }
-                                >
-                                    <MathJax.Text text={ content }/>
-                                    
-
-                                </MathJax.Context>
-
+                           
+                                {/*
                                 <div>
                                     <MathJax.Context input='ascii'>
                                         <div>
@@ -497,46 +563,85 @@ const Chapter = () =>{
                                         </div>
                                     </MathJax.Context>
                                 </div>
+                                 */}
+                                    
 
-                                <div>
-                                    <MathJax.Context input='tex'>
-                                        <div>
-                                            This is an inline math formula: <MathJax.Node inline>{'a = b'}</MathJax.Node>
+
+                                
+                            
+                            <Typography paragraph >
+                                
+                                <div >
+                                    <MathJax.Context input='ascii' >
+                                        <div >
+                                           A.)  <MathJax.Node inline >{ '3m*4m*6m = ?' }</MathJax.Node>
                                         </div>
                                     </MathJax.Context>
                                 </div>
-
-                            
-                            <Typography paragraph>
-                                In here create some sort of interactive activity based on the instructions found in the drawer.
-                                Try a draggable ven diagramm where you have to place words in the right spaces......On the nav have a section to where you can up a notes drawer coming from the right of the page.........
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                                facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                                gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                                donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                                adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                                Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                                imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                                arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                                donec massa sapien faucibus et molestie ac.
                             </Typography>
+                            <form className={classes.answer} noValidate autoComplete="off">
+                                <TextField id="outlined-basic" label="answer" variant="outlined"  size="small"/>
+                            </form>
+                            <Typography paragraph style={{marginTop:"40px"}}>
+                                
+                                <div >
+                                    <MathJax.Context input='ascii' >
+                                        <div >
+                                           B.)  <MathJax.Node inline >{ '7((km)/h)*4h*5((km)/s) = ?' }</MathJax.Node>
+                                        </div>
+                                    </MathJax.Context>
+                                </div>
+                            </Typography>
+                            <form className={classes.answer} noValidate autoComplete="off">
+                                <TextField id="outlined-basic" label="answer" variant="outlined"  size="small"/>
+                            </form>
                             </Paper>
                         </Grid>
                         <Grid item sm={6}>
                             <Paper  borderRight={1} elevation={0} style={{ height: 1000, backgroundColor: grey[100]}}>
-                            <Typography paragraph>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                                facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                                gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                                donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                                adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                                Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                                imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                                arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                                donec massa sapien faucibus et molestie ac.
+                            <Typography paragraph  variant="h5">
+                                 
+                                <form className={classes.courseNotes} noValidate autoComplete="off">
+                                <div>
+                                   
+                                    <TextField
+                                    id="standard-textarea"
+                                    label="Note Title:"
+                                    placeholder=""
+                                    onChange={handleChangeTextArea}
+                                    multiline
+                                    className={classes.courseNotes}
+
+                                    />
+                                  
+                                </div>
+                              
+                                </form>
+                                <form  noValidate autoComplete="off">
+                                <div>
+                                   
+                                    <TextField
+                                    id="1"
+                                    label=""
+                                    placeholder=""
+                                    onChange={handleChangeTextArea}
+                                    multiline
+                              
+                                    className={classes.courseNotes2}
+
+                                    />
+                                    
+                                  
+                                </div>
+                              
+                                </form>
                             </Typography>
+                            
+                            <Grid conatiner>
+                                <Grid item>
+
+                                </Grid>
+                            </Grid>
                             </Paper>
                         </Grid>
                     </Grid>
