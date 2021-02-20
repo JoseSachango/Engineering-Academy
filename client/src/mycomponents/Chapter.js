@@ -69,6 +69,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
 
 
 const theme = createMuiTheme({
@@ -617,9 +618,10 @@ const Chapter = () =>{
                                 </div>
                               
                                 </form>
-                                <form  noValidate autoComplete="off">
+                                <form  noValidate autoComplete="off" >
                                 <div>
                                    
+                                   {/*
                                     <TextField
                                     id="1"
                                     label=""
@@ -628,13 +630,24 @@ const Chapter = () =>{
                                     multiline
                               
                                     className={classes.courseNotes2}
+                                    inputProps={{ 'aria-label': 'naked' }}
 
                                     />
+                                    */}
+                                    <InputBase
+                                    className={classes.margin}
+                                    defaultValue=""
+                                    inputProps={{ 'aria-label': 'naked' }}
+                                    multiline
+                                    className={classes.courseNotes2}
+                                    style={{height:50}}
                                     
+                                    />
                                   
                                 </div>
                               
                                 </form>
+                               
                             </Typography>
                             
                             <Grid conatiner>
