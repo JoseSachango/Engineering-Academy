@@ -70,7 +70,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
-
+import styles from "./assets/jss/chapterstyle"
 
 const theme = createMuiTheme({
     typography: {
@@ -82,83 +82,13 @@ const theme = createMuiTheme({
   
     },
   });
-  
 
 
 
 
 const drawerWidth = 500;
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-    },
-    list: {
-        width: 250,
-      },
-    fullList: {
-        width: 'auto',
-    },
-    courseNotes:{
-        width: "100%",
-        
-    },
-    courseNotes2:{
-        width: "100%",
-        height: 500
-    },
-    nextExercise:{
-        marginTop: "70px",
-        marginBottom: "50px"
-    },
-    answer: {
-        '& > *': {
-          margin: theme.spacing(1),
-          width: '20ch',
-          marginLeft:"20px"
-        },
-      },
-    column1:{
-        marginLeft: "5px",
-        marginTop: "5px",
-        marginRight: "20px"
-    },
-    typography:{
-        marginLeft: "20px"
-    },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-    },
-    drawercontent:{
-        marginLeft: "20px",
-        marginTop: "40px",
-        marginRight: "20px",
-        marginBottom: "20px"
-    },
-    drawercontentEquations:{
-       marginLeft: "100px",
-       justifyContent: "center"
-    },
-
-    drawercontentIns:{
-        width: "100%"
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    drawerContainer: {
-      overflow: 'auto',
-    },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
-  }));
-
+const useStyles = makeStyles(styles);
 
 //--------------------------Border default properties
 const defaultProps = {
@@ -183,8 +113,7 @@ const GreenCheckbox = withStyles({
 
 
 
-
-const Chapter = () =>{
+const ChapterTemplate = (props) =>{
 
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -322,8 +251,11 @@ const Chapter = () =>{
           onKeyDown={toggleDrawer(anchor, false)}
         >
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            {['placeholder', 'placeholder'].map((text, index) => (
               <ListItem button key={text}>
+                {/*Import all the notes stored in the database in a list with the note titles 
+                displayed. When you click on the notes it should diplay on the very right hand panel
+                Turn of note taking functionality when you don't need it. */}
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
@@ -419,50 +351,33 @@ const Chapter = () =>{
               <Toolbar />
               <div className={classes.drawerContainer}>
                 <Typography variant="h4"  className={classes.drawercontent}>
-                   Units and Dimensions
+                   {props.title}
                 </Typography>
                 <Typography paragraph  className={classes.drawercontent}>
-                    Chemical engineers work in a variety of fields and are responsible for tackling a wide range of problems. Normally these problems involve 
-                    turning some sort of raw material, like crude oil, into desired products like gasoline. That being said, the 
-                    fundamental techniques for solving most of these problems aren't all that different. Therefore, 
-                    In this section we start by focusing on the fundamentals, namely units. Understanding units builds the groundwork for 
-                    tackling more advanced chemical engineering problems.
+                   {/*Add opening paragraph for the lesson here */}
                     
                 </Typography>
                 <Typography paragraph  className={classes.drawercontent}>
-                    Any quantity that's measured or counted has a numerical value(lets say 2.47) and a unit (whatever there are 2.47 of). 
-                    Together they are written in the following format: 
+                    {/*Content */}
                     <Grid container justify="center">
                         <Typography paragraph  className={classes.drawercontent}>
                         
                                         
-                        2 meters, 1/3 seconds, 4.39 kilograms, 5 gold rings
+                        {/*Example equation */}
                                     
                                     
                         </Typography>
                     </Grid>
-                    Dimensions are properties that can be measured such as length, or time and measureable units 
-                    (as opposed to countable units) are values of dimensions that have been predefined by law, 
-                    custom or convetion. For example, grams for mass, or seconds for time.
+                    {/*Content */}
                 </Typography>
                 <Typography paragraph  className={classes.drawercontent}>
-                  Units are treated like variables when quantities are added, substracted, multiplied, or divided. The rule is that the numerical
-                  values of two quantities can only be added or subtracted if the units are the same. However, numerical values of two quantities can always 
-                  be combined by multiplication or division.
+                  {/*Content */}
                               
                 </Typography>
                 <Grid container justify="center">
                     <Typography paragraph  className={classes.drawercontent}>
                     
-                                    <div >
-                                        <MathJax.Context input='ascii'>
-                                            <div >
-                                            
-                                                <MathJax.Node inline>{'3N * 4m = 12N*m'}</MathJax.Node>
-                                                
-                                            </div>
-                                        </MathJax.Context>
-                                    </div>
+                                    {/*Content */}
                                 
                                 
                                 
@@ -470,41 +385,17 @@ const Chapter = () =>{
                 </Grid>
                 <Grid container justify="center">
                     <Typography paragraph className={classes.drawercontent}>
-                                    <div >
-                                        <MathJax.Context input='ascii'>
-                                            <div >
-                                            
-                                                    <MathJax.Node inline>{'(5km) / (2h) = (2.5km)/h'}</MathJax.Node>
-                                                
-                                            </div>
-                                        </MathJax.Context>
-                                    </div>
+                                   {/*Content */}
                     </Typography>
                 </Grid>
                 <Grid container justify="center">
                     <Typography paragraph className={classes.drawercontent}>
-                                    <div >
-                                        <MathJax.Context input='ascii'>
-                                            <div>
-                                            
-                                                    <MathJax.Node inline>{'7((km)/h)*4h = 28km'}</MathJax.Node>
-                                                
-                                            </div>
-                                        </MathJax.Context>
-                                    </div>
+                                   {/*Content*/}
                     </Typography>
                 </Grid>
                 <Grid container justify="center">
                     <Typography paragraph className={classes.drawercontent}>
-                                    <div >
-                                        <MathJax.Context input='ascii'>
-                                            <div >
-                                            
-                                                    <MathJax.Node inline>{'3m*4m = 12m^2'}</MathJax.Node>
-                                                
-                                            </div>
-                                        </MathJax.Context>
-                                    </div>
+                                   {/*Content */}
                     </Typography>
                 </Grid>
                 <Grid container alignItems="center" >
@@ -522,7 +413,7 @@ const Chapter = () =>{
 
                     <FormControlLabel
                         control={<GreenCheckbox checked={state.checkedG} onChange={handleChangeCheckbox} name="checkedG" />}
-                        label="Solve the equations in the terminal"
+                        label=""
                     />
                    
                 </Typography>
@@ -538,7 +429,7 @@ const Chapter = () =>{
                     </Grid>
                     <Grid item sm={6}>
                         <Grid container justify="center">
-                        <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion">
+                        <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion" >
                             Next
                         </Button>
                         </Grid>
@@ -556,15 +447,7 @@ const Chapter = () =>{
                             <Paper className={classes.column1} borderRight={1} elevation={0} style={{ height: 1000, backgroundColor: grey[100]}}>
 
                            
-                                {/*
-                                <div>
-                                    <MathJax.Context input='ascii'>
-                                        <div>
-                                            This is an inline formula written in AsciiMath: <MathJax.Node inline>{ ascii2 }</MathJax.Node>
-                                        </div>
-                                    </MathJax.Context>
-                                </div>
-                                 */}
+                               
                                     
 
 
@@ -572,30 +455,15 @@ const Chapter = () =>{
                             
                             <Typography paragraph >
                                 
-                                <div >
-                                    <MathJax.Context input='ascii' >
-                                        <div >
-                                           A.)  <MathJax.Node inline >{ '3m*4m*6m = ?' }</MathJax.Node>
-                                        </div>
-                                    </MathJax.Context>
-                                </div>
+                                {/*Content */}
                             </Typography>
-                            <form className={classes.answer} noValidate autoComplete="off">
+                            {/*<form className={classes.answer} noValidate autoComplete="off">
                                 <TextField id="outlined-basic" label="answer" variant="outlined"  size="small"/>
-                            </form>
-                            <Typography paragraph style={{marginTop:"40px"}}>
+                            </form>*/}
+                          
+                           
+
                                 
-                                <div >
-                                    <MathJax.Context input='ascii' >
-                                        <div >
-                                           B.)  <MathJax.Node inline >{ '7((km)/h)*4h*5((km)/s) = ?' }</MathJax.Node>
-                                        </div>
-                                    </MathJax.Context>
-                                </div>
-                            </Typography>
-                            <form className={classes.answer} noValidate autoComplete="off">
-                                <TextField id="outlined-basic" label="answer" variant="outlined"  size="small"/>
-                            </form>
                             </Paper>
                         </Grid>
                         <Grid item sm={6}>
@@ -670,4 +538,4 @@ const Chapter = () =>{
 }
 
 
-export default Chapter 
+export default ChapterTemplate 

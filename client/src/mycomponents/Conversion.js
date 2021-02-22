@@ -184,7 +184,7 @@ const GreenCheckbox = withStyles({
 
 
 
-const Chapter = () =>{
+const Conversion = () =>{
 
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -419,7 +419,7 @@ const Chapter = () =>{
               <Toolbar />
               <div className={classes.drawerContainer}>
                 <Typography variant="h4"  className={classes.drawercontent}>
-                   Units and Dimensions
+                   Conversion Factors
                 </Typography>
                 <Typography paragraph  className={classes.drawercontent}>
                     Chemical engineers work in a variety of fields and are responsible for tackling a wide range of problems. Normally these problems involve 
@@ -538,7 +538,7 @@ const Chapter = () =>{
                     </Grid>
                     <Grid item sm={6}>
                         <Grid container justify="center">
-                        <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion">
+                        <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion" >
                             Next
                         </Button>
                         </Grid>
@@ -670,4 +670,4 @@ const Chapter = () =>{
 }
 
 
-export default Chapter 
+export default Conversion 

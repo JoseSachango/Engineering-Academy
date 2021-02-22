@@ -9,6 +9,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Mydashboard from "./mycomponents/myDashboard"
 import ChemProCourse from "./mycomponents/ChemProCourse"
 import Chapter from "./mycomponents/Chapter"
+import Conversion from "./mycomponents/exercises/conversionChp1"
+
 
 
 function App() {
@@ -27,6 +29,9 @@ function App() {
               </Route>
               <Route exact path={["/ChemProCourse/Chapter1"]}>
                 <Chapter />
+              </Route>
+              <Route exact path={["/ChemProCourse/Chapter1/Conversion"]}>
+                <Conversion />
               </Route>
              
             </Switch>
