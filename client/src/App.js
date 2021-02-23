@@ -10,6 +10,9 @@ import Mydashboard from "./mycomponents/myDashboard"
 import ChemProCourse from "./mycomponents/ChemProCourse"
 import Chapter from "./mycomponents/Chapter"
 import Conversion from "./mycomponents/exercises/conversionChp1"
+import ForceandWeight from "./mycomponents/exercises/ForceandWeightChp1"
+import ScientificNotation from "./mycomponents/exercises/ScientificNotation";
+import Estimation from "./mycomponents/exercises/Estimation"
 
 
 
@@ -32,6 +35,15 @@ function App() {
               </Route>
               <Route exact path={["/ChemProCourse/Chapter1/Conversion"]}>
                 <Conversion />
+              </Route>
+              <Route exact path={["/ChemProCourse/Chapter1/ForceandWeight"]}>
+                <ForceandWeight />
+              </Route>
+              <Route exact path={["/ChemProCourse/Chapter1/ScientificNotation"]}>
+                <ScientificNotation />
+              </Route>
+              <Route exact path={["/ChemProCourse/Chapter1/Estimation"]}>
+                <Estimation />
               </Route>
              
             </Switch>

@@ -354,48 +354,164 @@ const ChapterTemplate = (props) =>{
                    {props.title}
                 </Typography>
                 <Typography paragraph  className={classes.drawercontent}>
-                   {/*Add opening paragraph for the lesson here */}
-                    
-                </Typography>
-                <Typography paragraph  className={classes.drawercontent}>
-                    {/*Content */}
+                   {props.opening}
+
+                   {props.openingEquation1 && (
+
                     <Grid container justify="center">
                         <Typography paragraph  className={classes.drawercontent}>
                         
                                         
                         {/*Example equation */}
+                            
+                                    {props.openingEquation1 && (
+
+                                            <div >
+                                                <MathJax.Context input='ascii'>
+                                                    <div >
+                                                    
+                                                            <MathJax.Node inline>{props.openingEquation1}</MathJax.Node> 
+                                                        
+                                                    </div>
+                                                </MathJax.Context>
+                                            </div>
+
+                                    )}
+
+                                    
+                                    
+                                    
+                        </Typography>
+                    </Grid>
+
+                   )}
+                   
+
+                   {props.openingEquation2 && (
+
+                    <Grid container justify="center">
+                        <Typography paragraph  className={classes.drawercontent}>
+                        
+                                        
+                        {/*Example equation */}
+                            
+                                    {props.openingEquation2 && (
+
+                                            <div >
+                                                <MathJax.Context input='ascii'>
+                                                    <div >
+                                                    
+                                                            <MathJax.Node inline>{props.openingEquation2}</MathJax.Node> 
+                                                        
+                                                    </div>
+                                                </MathJax.Context>
+                                            </div>
+
+                                    )}
+
+                                    
+                                    
+                                    
+                        </Typography>
+                    </Grid>
+
+                    )}
+                    
+                </Typography>
+                <Typography paragraph  className={classes.drawercontent}>
+                    {props.main}
+                    <Grid container justify="center">
+                        <Typography paragraph  className={classes.drawercontent}>
+                        
+                                        
+                        {/*Example equation */}
+                            {props.table && (
+                                props.table
+                            )
+                            }
+                                    {props.equation1 && (
+
+                                            <div >
+                                                <MathJax.Context input='ascii'>
+                                                    <div >
+                                                    
+                                                            <MathJax.Node inline>{props.equation1}</MathJax.Node> {props.text}
+                                                        
+                                                    </div>
+                                                </MathJax.Context>
+                                            </div>
+
+                                    )}
+
+                                    
                                     
                                     
                         </Typography>
                     </Grid>
                     {/*Content */}
                 </Typography>
-                <Typography paragraph  className={classes.drawercontent}>
-                  {/*Content */}
-                              
-                </Typography>
+              
                 <Grid container justify="center">
                     <Typography paragraph  className={classes.drawercontent}>
                     
                                     {/*Content */}
-                                
-                                
+                                    {props.equation2 && (
+
+                                        <div >
+                                            <MathJax.Context input='ascii'>
+                                                <div >
+                                                
+                                                        <MathJax.Node inline>{props.equation2}</MathJax.Node> 
+                                                    
+                                                </div>
+                                            </MathJax.Context>
+                                        </div>
+
+                                    )}
+                                    
                                 
                     </Typography>
                 </Grid>
                 <Grid container justify="center">
                     <Typography paragraph className={classes.drawercontent}>
                                    {/*Content */}
+                                   {props.equation3 && (
+
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                    <MathJax.Node inline>{props.equation3}</MathJax.Node> 
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+
+                                    )}
                     </Typography>
                 </Grid>
                 <Grid container justify="center">
                     <Typography paragraph className={classes.drawercontent}>
                                    {/*Content*/}
+                                   {props.main2 && (
+                                       props.main2
+                                   )}
                     </Typography>
                 </Grid>
                 <Grid container justify="center">
                     <Typography paragraph className={classes.drawercontent}>
                                    {/*Content */}
+                                   {props.main2equation && (
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                    <MathJax.Node inline>{props.main2equation}</MathJax.Node> 
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                                   )}
                     </Typography>
                 </Grid>
                 <Grid container alignItems="center" >
@@ -413,7 +529,7 @@ const ChapterTemplate = (props) =>{
 
                     <FormControlLabel
                         control={<GreenCheckbox checked={state.checkedG} onChange={handleChangeCheckbox} name="checkedG" />}
-                        label=""
+                        label={props.instructions}
                     />
                    
                 </Typography>
@@ -429,7 +545,7 @@ const ChapterTemplate = (props) =>{
                     </Grid>
                     <Grid item sm={6}>
                         <Grid container justify="center">
-                        <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion" >
+                        <Button variant="outlined" color="primary"  component={Link} to={props.endpoint} >
                             Next
                         </Button>
                         </Grid>
