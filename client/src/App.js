@@ -11,8 +11,8 @@ import ChemProCourse from "./mycomponents/ChemProCourse"
 import Chapter from "./mycomponents/Chapter"
 import Conversion from "./mycomponents/exercises/conversionChp1"
 import ForceandWeight from "./mycomponents/exercises/ForceandWeightChp1"
-import ScientificNotation from "./mycomponents/exercises/ScientificNotation";
-import Estimation from "./mycomponents/exercises/Estimation"
+import ScientificNotation from "./mycomponents/exercises/ScientificNotationChp1";
+import Estimation from "./mycomponents/exercises/EstimationChp1"
 
 
 

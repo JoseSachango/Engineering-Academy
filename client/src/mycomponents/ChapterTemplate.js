@@ -514,6 +514,62 @@ const ChapterTemplate = (props) =>{
                                    )}
                     </Typography>
                 </Grid>
+                <Grid container justify="center">
+                    <Typography paragraph className={classes.drawercontent}>
+                                   {/*Content*/}
+                                   {props.main3 && (
+                                       props.main3
+                                   )}
+                    </Typography>
+                </Grid>
+                <Grid container justify="center">
+                    <Typography paragraph className={classes.drawercontent}>
+                                   {/*Content */}
+                                   {props.main3equation && (
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                    <MathJax.Node inline>{props.main3equation}</MathJax.Node> 
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                                   )}
+                    </Typography>
+                </Grid>
+                <Grid container justify="center">
+                    <Typography paragraph className={classes.drawercontent}>
+                                   {/*Content */}
+                                   {props.main3equation1 && (
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                    <MathJax.Node inline>{props.main3equation1}</MathJax.Node> 
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                                   )}
+                    </Typography>
+                </Grid>
+                <Grid container justify="center">
+                    <Typography paragraph className={classes.drawercontent}>
+                                   {/*Content */}
+                                   {props.main3equation2 && (
+                                    <div >
+                                        <MathJax.Context input='ascii'>
+                                            <div >
+                                            
+                                                    <MathJax.Node inline>{props.main3equation2}</MathJax.Node> 
+                                                
+                                            </div>
+                                        </MathJax.Context>
+                                    </div>
+                                   )}
+                    </Typography>
+                </Grid>
                 <Grid container alignItems="center" >
                     <Grid item sm={12}>
                         <Paper elevation={0}  className={classes.drawercontentIns} style={{ height: 45, backgroundColor: grey[100]}}>

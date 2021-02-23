@@ -26,7 +26,11 @@ runs might be as follows:`
 const main = ``
 const main2 = `If this is the case  you might ask, what's the true value of X? The most common estimate is the sample mean (or artihmetic mean).
 We collect N measured values of X (X1,X2,...,Xn) and then calculate:`
+const main3 = `Three quantities (the range, the sample variance, and the sample standard deviation) are used to express the extent to which values of a random variable scatter about their mean value. They're written in consecutive order below.`
 const main2equation = `X_(mean) = (1/N)(X_1+X_2+...+X_N) = (1/N)sum_(j=1)^N(X_j)`
+const main3equation = ` R = X_(max)-X_(min)`
+const main3equation1= ` s_(X)^2 = (1/(N-1))[(X_1-X_(avg))^2+(X_2-X_(avg))^2+...+(X_N-X_(avg))^2] `
+const main3equation2= ` s_X = (s_(X)^2)^(1/2)`
 const equation1 = ``
 const equation2 = ``
 const instructions = `Run the animations.`
@@ -91,7 +95,12 @@ const Estimation = () =>{
             endpoint={endpoint}
             table={table}
             main2={main2}
+            main3={main3}
             main2equation={main2equation}
+            main3equation={main3equation}
+            main3equation1={main3equation1}
+            main3equation2={main3equation2}
+            
                 
             />
         )
