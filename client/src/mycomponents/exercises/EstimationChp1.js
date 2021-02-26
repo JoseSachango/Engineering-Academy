@@ -34,6 +34,7 @@ const main3equation2= ` s_X = (s_(X)^2)^(1/2)`
 const equation1 = ``
 const equation2 = ``
 const instructions = `Run the animations.`
+const endpointprev = "/ChemProCourse/Chapter1/ScientificNotation"
 const endpoint = "/ChemProCourse/Chapter1/Dimensionless"
 
 
@@ -93,6 +94,7 @@ const Estimation = () =>{
             equation2={equation2}  
             instructions={instructions} 
             endpoint={endpoint}
+            endpointprev={endpointprev}
             table={table}
             main2={main2}
             main3={main3}

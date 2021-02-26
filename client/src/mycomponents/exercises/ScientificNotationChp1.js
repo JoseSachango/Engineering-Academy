@@ -35,6 +35,7 @@ const equation4 = ``
 const equation5 = ``
 const instructions = `Run the animations.`
 const endpoint = "/ChemProCourse/Chapter1/Estimation"
+const endpointprev = "/ChemProCourse/Chapter1/ForceandWeight"
 const text = ` `
 
 
@@ -64,6 +65,7 @@ const ScientificNotation = () =>{
             equation5={equation5}
             instructions={instructions} 
             endpoint={endpoint}
+            endpointprev={endpointprev}
             text={text}
            
             />

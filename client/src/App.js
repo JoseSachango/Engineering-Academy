@@ -12,7 +12,8 @@ import Chapter from "./mycomponents/Chapter"
 import Conversion from "./mycomponents/exercises/conversionChp1"
 import ForceandWeight from "./mycomponents/exercises/ForceandWeightChp1"
 import ScientificNotation from "./mycomponents/exercises/ScientificNotationChp1";
-import Estimation from "./mycomponents/exercises/EstimationChp1"
+import Estimation from "./mycomponents/exercises/EstimationChp1";
+import Simulator from "./mycomponents/Simulator";
 
 
 
@@ -29,6 +30,9 @@ function App() {
               </Route>
               <Route exact path={["/ChemProCourse"]}>
                 <ChemProCourse />
+              </Route>
+              <Route exact path={["/Simulator"]}>
+                <Simulator/>
               </Route>
               <Route exact path={["/ChemProCourse/Chapter1"]}>
                 <Chapter />

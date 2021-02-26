@@ -1,4 +1,12 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from 'react';
+import ReactFlow, {
+  ReactFlowProvider,
+  addEdge,
+  removeElements,
+  Controls,
+  Handle
+} from 'react-flow-renderer';
+import Sidebar from './sidebar';
 import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 //import AppBar from "@material-ui/core/AppBar";
@@ -75,19 +83,7 @@ import Box from '@material-ui/core/Box';
 import { DataGrid } from '@material-ui/data-grid';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import axios from "axios"
-
-import {
-  Chart,
-  ArgumentAxis,
-  ValueAxis,
-  BarSeries,
-  LineSeries,
-  Legend,
-  Title,
-} from '@devexpress/dx-react-chart-material-ui';
-
-import { ValueScale } from '@devexpress/dx-react-chart';
-import ChemProCourse from "./ChemProCourse";
+import CustomEdge from './CustomEdge';//For the flow diagram
 
 const drawerWidth = 240;
 
@@ -220,17 +216,23 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const Mydashboard = (props) => {
+
+
+//-----------------------------------------For the flow diagram
+const initialElements = [
+    
+    
+  ];
+  let id = 0;
+  const getId = () => `horizontal-${id++}`;
+//-----------------------------------------End of for the flow diagram
+
+const Simulation = (props) => {
 
     const {loginWithRedirect,logout,isAuthenticated} = useAuth0();
 
 
-    const ChangeLocation = () =>{
-      return(
-        alert("Button is working")
-      )
-    }
-    
+  
 
    
         
@@ -239,11 +241,208 @@ const Mydashboard = (props) => {
             const theme = useTheme();
             const [mobileOpen, setMobileOpen] = React.useState(false);
             const [open, setOpen] = React.useState(false);
-            const [valueTabs, setValueTabs] = React.useState(0);
+            
 
-            const handleChangeTabs = (event, newValue) => {
-              setValueTabs(newValue);
+ //----------------------------------------------------------------------------------------------------------Everthing for the flow diagram
+            const reactFlowWrapper = useRef(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const [elements, setElements] = useState(initialElements);
+  const [sourceHandle,setSourceHandle] = useState({})
+  const [targetId,setTargetId] = useState("")
+  const [nodeName, setNodeName] = useState('');
+  const [nodeMass, setNodeMass] = useState("")
+  const [nodeEnergy, setNodeEnergy] = useState("")
+  const [elementClickedId, setElementClickedId] = useState("")
+  const [elementClickedLabel, setElementClickedLabel] = useState("")
+
+
+
+
+  const onConnect = (params) => {
+    //Write something here that does a calculation on params.sourceHandle use data.text or data.whatever
+    setSourceHandle(JSON.parse(params.sourceHandle))
+    setTargetId(params.target)
+    setElements((els) => addEdge({ ...params, animated: true, style: { stroke: '#000' } }, els) )
+
+    console.log("This is the params variable: ",params)
+    console.log("These are all the elements:  ",elements)
+  };//I Don't understand what's going on here.
+
+  //---------------------------------------useEffect for transfering data via edge connect
+  useEffect(() => {
+    setElements((els) =>
+      els.map((el) => {
+        if (el.id === targetId) {
+          // it's important that you create a new object here
+          // in order to notify react flow about the change
+         
+
+          el.data = {
+            ...el.data,
+            mass: sourceHandle.mass ,
+            energy: sourceHandle.energy  , 
+          }; //Source handle should be an object
+        }
+        return el;
+      })
+    );
+  }, [sourceHandle, setElements,targetId]); 
+  //---------------------------------------
+
+
+  //---------------------------------------useEffect for editing data in the node
+  const onElementClick = (event, element) => {
+    console.log('This is the click element: ', element)
+    setElementClickedId(element.id)
+    
+    setNodeName(element.data.label)
+    setNodeMass(element.data.mass)
+    setNodeEnergy(element.data.energy)
+
+};
+
+  useEffect(() => {
+    setElements((els) =>
+      els.map((el) => {
+        if (el.id === elementClickedId) {
+          // it's important that you create a new object here
+          // in order to notify react flow about the change
+         
+
+          el.data = {
+            ...el.data,
+            label: nodeName,
+          };
+        }
+        return el;
+      })
+    );
+  }, [nodeName, setElements,elementClickedId]);
+
+
+  useEffect(() => {
+      setElements((els) =>
+        els.map((el) => {
+          if (el.id === elementClickedId) {
+            // it's important that you create a new object here
+            // in order to notify react flow about the change
+           
+
+            el.data = {
+              ...el.data,
+              mass: nodeMass,
             };
+          }
+          return el;
+        })
+      );
+    }, [nodeMass, setNodeMass,elementClickedId]);
+
+    useEffect(() => {
+      setElements((els) =>
+        els.map((el) => {
+          if (el.id === elementClickedId) {
+            // it's important that you create a new object here
+            // in order to notify react flow about the change
+           
+
+            el.data = {
+              ...el.data,
+              energy: nodeEnergy,
+            };
+          }
+          return el;
+        })
+      );
+    }, [nodeEnergy, setNodeEnergy,elementClickedId]);
+  //---------------------------------------
+
+
+  const onElementsRemove = (elementsToRemove) =>
+    setElements((els) => removeElements(elementsToRemove, els));
+  const onLoad = (_reactFlowInstance) =>
+    setReactFlowInstance(_reactFlowInstance);
+  const onDragOver = (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  };
+  const graphStyles = { width: "100%", height: "300px" };
+  const onDrop = (event) => {
+    event.preventDefault();
+    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    const type = event.dataTransfer.getData('application/reactflow');
+    const typeO = JSON.parse(type)
+    //console.log("This is the type of node: ",typeO)
+    const position = reactFlowInstance.project({
+      x: event.clientX - reactFlowBounds.left,
+      y: event.clientY - reactFlowBounds.top,
+    });
+    //console.log("This is the current id before newNode: ", id)
+    const newNode = {
+      id: getId(),
+      type: typeO.type,
+      sourcePosition: typeO.sourcePosition,
+      targetPosition: typeO.targetPosition,
+      position,
+      data: { label: `${typeO.name} node`,text:"all the info here",mass:"",energy:"", properties:{} },
+      
+    };
+    
+    //console.log("This is the current id after newNode: ", id)
+    //console.log("This is the newEdgeId before newEdge: ",newEdgeId)
+    
+    
+  
+    //console.log("This is the current id after newEdge: ", id)
+    //console.log("THis is the newEdge object: ", newEdge)
+    //console.log("This is the newNode object: ", newNode)
+    setElements((es) => es.concat(newNode));
+    
+    //console.log("This is the new initialelements array: ",elements)
+  };
+
+  const edgeTypes = {
+    default: CustomEdge,
+  };
+
+  //----------------------------Custom nodes
+  const customNodeStyles = {
+    background: '#9CA8B3',
+    color: '#FFF',
+    padding: 10,
+  };
+
+  const CustomNodeComponent = ({ data }) => {
+    return (
+      <div style={customNodeStyles}>
+        <Handle type="target" position="left" style={{ borderRadius: 0 }} />
+        <div>{data.text}</div>
+        <Handle
+          type="source"
+          position="right"
+          id={JSON.stringify(data)}
+          style={{ top: '30%', borderRadius: 0 }}
+        />
+        <Handle
+          type="source"
+          position="right"
+          id="b"
+          style={{ top: '70%', borderRadius: 0 }}
+        />
+      </div>
+    );
+  };
+
+  const nodeTypes = {
+    output: CustomNodeComponent,//This applies to all nodes with the name output
+    default: CustomNodeComponent,
+    input: CustomNodeComponent
+  };
+  //------------------------------Custom nodes end
+  
+
+//----------------------------------------------------------------------------------------------------End of everything for the flow diagram
+          
             
             
 
@@ -290,36 +489,10 @@ const Mydashboard = (props) => {
            //---------------------------End of MenuList
 
            //---------------------------Chart Information
-                var data1 = {
-                    labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'],
-                    series: [
-                    [1, 2, 4, 8, 6, -2, -1, -4, -6, -2]
-                    ]
-                };
-
-                var options = {
-                    high: 10,
-                    low: -10,
-                    axisX: {
-                      labelInterpolationFnc: function(value, index) {
-                        return index % 2 === 0 ? value : null;
-                      }
-                    }
-                  };
-              
-                  var type = 'Bar'
+            
 
                   //------------------------New chart data
-                  const data = [
-                    { argument: 1, value: 10 },
-                    { argument: 2, value: 20 },
-                    { argument: 3, value: 30 },
-                  ];
-                  const data3 = [
-                    { argument: 1, value: 1 },
-                    { argument: 2, value: 2 },
-                    { argument: 3, value: 3 },
-                  ];
+            
 
                   //------------------------
 
@@ -330,18 +503,7 @@ const Mydashboard = (props) => {
 
 
                   //-------------------------------New chart data2
-                  const dataObject = {
-                    data: [
-                      { month: 'Jan', sale: 50, total: 987 },
-                      { month: 'Feb', sale: 100, total: 3000 },
-                      { month: 'March', sale: 30, total: 1100 },
-                      { month: 'April', sale: 107, total: 7100 },
-                      { month: 'May', sale: 95, total: 4300 },
-                      { month: 'June', sale: 150, total: 7500 },
-                    ],
-                  };
                 
-                const { data: chartData } = dataObject;
                   //----------------------------------
 
 
@@ -349,11 +511,7 @@ const Mydashboard = (props) => {
 
            //---------------------------End of chart info 
            //---------------------------Card with header functionality
-           const [expandedCard, setExpandedCard] = React.useState(false);
-
-            const handleExpandClickCard = () => {
-                setExpandedCard(!expandedCard);
-            };
+       
            //---------------------------End of card with header
           
 
@@ -372,37 +530,9 @@ const Mydashboard = (props) => {
 
             //-----------------------------------------Chart tabs functions and data
 
-            function TabPanel(props) {
-              const { children, value, index, ...other } = props;
-            
-              return (
-                <div
-                  role="tabpanel"
-                  hidden={value !== index}
-                  id={`scrollable-force-tabpanel-${index}`}
-                  aria-labelledby={`scrollable-force-tab-${index}`}
-                  {...other}
-                >
-                  {value === index && (
-                    <Box p={3}>
-                      <Typography>{children}</Typography>
-                    </Box>
-                  )}
-                </div>
-              );
-              }
            
-            
               
-              function a11yProps(index) {
-                return {
-                  id: `scrollable-force-tab-${index}`,
-                  'aria-controls': `scrollable-force-tabpanel-${index}`,
-                };
-              }
-
-              const titleStyle = { margin: 'auto' };
-              const TitleText = props => <Title.Text {...props} style={titleStyle} />;
+             
             //-----------------------------------------Chart tabs end
 
 
@@ -456,7 +586,7 @@ const Mydashboard = (props) => {
               
                 <Divider />
                 <List>
-                  {['Dashboard', 'Course', 'Simulator', 'Report Builder'].map((text, index) => (
+                  {['Saved Projects', 'New Project', 'Components', 'Methods'].map((text, index) => (
                     <>
                         {text==="Course"? (
                             <>
@@ -472,13 +602,13 @@ const Mydashboard = (props) => {
                                 </ListItem>
                                 <Collapse in={open} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
-                                        <ListItem button className={classes.nested} component={Link} to="/ChemProCourse">
+                                        <ListItem button className={classes.nested}>
                                             <ListItemIcon>
                                             <StarBorder />
                                             </ListItemIcon>
-                                            
-                                              <ListItemText primary="Chemical Processes" component={Link} to="/ChemProCourse"  />
-                                            
+                                            <Link to="/ChemProCourse" role="button" className="btn btn-link">
+                                              <ListItemText primary="Chemical Processes" />
+                                            </Link>
                                            
                                            
                                         </ListItem>
@@ -486,22 +616,7 @@ const Mydashboard = (props) => {
                                         </List>
                                 </Collapse>
                             </>
-                        ): text==="Simulator" ?
-                        (
-                            <ListItem button key={text} component={Link} to="/Simulator" >
-                                
-                                <ListItemIcon>{sidebarIcons[text] ?  sidebarIcons[text] : null}</ListItemIcon>
-
-                                
-                                  <ListItemText primary={text} component={Link} to="/Simulator" /> 
-                                
-                                
-                                
-                                
-                            </ListItem>
-                            
                         ):
-
                         (
                             <ListItem button key={text}  >
                                 
@@ -514,10 +629,7 @@ const Mydashboard = (props) => {
                                 
                             </ListItem>
                             
-                        )
-
-                        
-                        }
+                        )}
                         
                         
                     </>
@@ -533,6 +645,7 @@ const Mydashboard = (props) => {
           
             const container = window !== undefined ? () => window().document.body : undefined;
             console.log(sidebarIcons.Book)
+
             return (
                 
                 !isAuthenticated&&(
@@ -637,214 +750,49 @@ const Mydashboard = (props) => {
                     
                     <div className={classes.toolbar} />
                         <div>
-                          
-                           
-                            <Grid container>
-                                    <Grid item >
-                                      <Paper  elevation={3} className={classes.cardheader} >
-                                          <Revenue style={{ color: grey[50] }}/>
-                                      </Paper>
-                                     
-                                    </Grid>
-                            </Grid>
-                            <Card className={classes.card} >
-                                
-                               
-                                <CardMedia
-                                    className={classes.media}
-                                    image= "../../components/DocumentationExperiment/assets/img/AmineTreatingPFD.png"
-                                    title="Paella dish"
-                                />
-                                <Grid container>
+                          {/* Flowdiagram content goes here ------------------------------------------------------------------------*/}
 
-                                      <Grid item sm={6}>
-
-                                      </Grid>
-                                      <Grid item sm={6}>
-                                            <CardContent className={classes.cardcontent}>
-                                              <Typography  variant="body2" color="textSecondary" component="p">
-                                              Revenue
-                                              </Typography>
-                                              <Typography className={classes.cardtitle} variant="body2" color="textSecondary" component="p">
-                                                $34,000
-                                              </Typography>
-                                          </CardContent>
-                                      </Grid>
-                             
-                                </Grid>
-                              
-                                <Divider />
-                                <CardActions disableSpacing>
-                                    <IconButton aria-label="add to favorites">
-                                    <FavoriteIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="share">
-                                    <ShareIcon />
-                                    </IconButton>
-                                    <IconButton
-                                    className={clsx(classes.expand, {
-                                        [classes.expandOpen]: expandedCard,
-                                    })}
-                                    onClick={handleExpandClickCard}
-                                    aria-expanded={expandedCard}
-                                    aria-label="show more"
-                                    >
-                                    <ExpandMoreIcon />
-                                    </IconButton>
-                                </CardActions>
-                                <Collapse in={expandedCard} timeout="auto" unmountOnExit>
-                                    <CardContent>
-                                    <Typography paragraph>Method:</Typography>
-                                    <Typography paragraph>
-                                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                                        minutes.
-                                    </Typography>
-                                    <Typography paragraph>
-                                        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-                                        heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-                                        browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-                                        and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-                                        pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-                                        saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-                                    </Typography>
-                                    <Typography paragraph>
-                                        Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-                                        without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-                                        medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-                                        again without stirring, until mussels have opened and rice is just tender, 5 to 7
-                                        minutes more. (Discard any mussels that don’t open.)
-                                    </Typography>
-                                    <Typography>
-                                        Set aside off of the heat to let rest for 10 minutes, and then serve.
-                                    </Typography>
-                                    </CardContent>
-                                </Collapse>
-                            </Card>
-                              {/*Chart content*/}
-                                <Paper className={classes.chart}>
-                                  <Chart
-                                    data={data}
-                                  >
-                                    <ArgumentAxis />
-                                    <ValueAxis />
-
-                                    <LineSeries valueField="value" argumentField="argument" />
-                                  </Chart>
-                                </Paper>
-                              {/*Chart content end*/}
-                            
-                            
-                              {/* 3rd chart */}
-                                <Paper className={classes.chart3}>
-                                  <Chart
-                                    data={chartData}
-                                  >
-                                    <ValueScale name="sale" />
-                                    <ValueScale name="total" />
-
-                                    <ArgumentAxis />
-                                    <ValueAxis scaleName="sale" showGrid={false} showLine showTicks />
-                                    <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
-
-                                    <BarSeries
-                                      name="Units Sold"
-                                      valueField="sale"
-                                      argumentField="month"
-                                      scaleName="sale"
-                                    />
-
-                                    <LineSeries
-                                      name="Total Transactions"
-                                      valueField="total"
-                                      argumentField="month"
-                                      scaleName="total"
-                                    />
-                                    <Title
-                                      text="Noisy and Original signals"
-                                      textComponent={TitleText}
-                                    />
-
-                                    <Legend />
-                                  </Chart>
-                                </Paper>
-                              {/*3rd chart end */}
-                              {/*Chart tabs */}
-                                <div className={classes.tabs}>
-                                  <AppBar position="static" color="default">
-                                    <Tabs
-                                      value={valueTabs}
-                                      onChange={handleChangeTabs}
-                                      variant="scrollable"
-                                      scrollButtons="on"
-                                      indicatorColor="primary"
-                                      textColor="primary"
-                                      aria-label="scrollable force tabs example"
-                                    >
-                                      <Tab label="Chart One" icon={<PhoneIcon />} {...a11yProps(0)} />
-                                      <Tab label="Chart Two" icon={<FavoriteIcon />} {...a11yProps(1)} />
-                                      <Tab label="Chart Three" icon={<PersonPinIcon />} {...a11yProps(2)} />
-                                      <Tab label="Chart Four" icon={<HelpIcon />} {...a11yProps(3)} />
-                                      <Tab label="Chart Five" icon={<ShoppingBasket />} {...a11yProps(4)} />
-                                      <Tab label="Chart Six" icon={<ThumbDown />} {...a11yProps(5)} />
-                                      <Tab label="Chart Seven" icon={<ThumbUp />} {...a11yProps(6)} />
-                                    </Tabs>
-                                  </AppBar>
-                                  <TabPanel value={valueTabs} index={0}>
-                                      <Paper elevation={3} className={classes.chart3}>
-                                        <Chart
-                                          data={chartData}
+                            <ReactFlowProvider>
+        
+                                    <div className="reactflow-wrapper" ref={reactFlowWrapper}>
+                                        <ReactFlow
+                                            edgeTypes={edgeTypes}
+                                            nodeTypes={nodeTypes}
+                                            elements={elements}
+                                            onConnect={onConnect}
+                                            onElementClick={onElementClick}
+                                            onElementsRemove={onElementsRemove}
+                                            onLoad={onLoad}
+                                            onDrop={onDrop}
+                                            onDragOver={onDragOver}
+                                            style={graphStyles}
+                                            
                                         >
-                                          <ValueScale name="sale" />
-                                          <ValueScale name="total" />
-
-                                          <ArgumentAxis />
-                                          <ValueAxis scaleName="sale" showGrid={false} showLine showTicks />
-                                          <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
-
-                                          <BarSeries
-                                            name="Units Sold"
-                                            valueField="sale"
-                                            argumentField="month"
-                                            scaleName="sale"
-                                          />
-
-                                          <LineSeries
-                                            name="Total Transactions"
-                                            valueField="total"
-                                            argumentField="month"
-                                            scaleName="total"
-                                          />
-                                                  <Title
-                                                    text="Noisy and Original signals"
-                                                    textComponent={TitleText}
-                                                  />
-
-                                          <Legend />
-                                        </Chart>
-                                      </Paper>
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={1}>
-                                    <div style={{ height: 400, width: '100%' }}>
-                                      <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+                                            <Controls />
+                                        </ReactFlow>
+                                    
                                     </div>
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={2}>
-                                    Item Three
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={3}>
-                                    Item Four
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={4}>
-                                    Item Five
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={5}>
-                                    Item Six
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={6}>
-                                    Item Seven
-                                  </TabPanel>
-                                </div>
-                              {/*Char tabs end */}
+                                    <Grid container style={{backgroundColor: grey[500]}} >
+                                            <Sidebar />
+                                            <label>label:</label>
+                                                    <input
+                                                        value={nodeName}
+                                                        onChange={(evt) => setNodeName(evt.target.value)}
+                                                    />
+                                                    <label>label:Mass</label>
+                                                    <input
+                                                        value={nodeMass}
+                                                        onChange={(evt) => setNodeMass(evt.target.value)}
+                                                    />
+                                                    <label>label:Energy</label>
+                                                    <input
+                                                        value={nodeEnergy}
+                                                        onChange={(evt) => setNodeEnergy(evt.target.value)}
+                                                    />
+
+                                    </Grid>
+                            </ReactFlowProvider>
+                                                    
                          
                         </div>
 
@@ -859,4 +807,4 @@ const Mydashboard = (props) => {
 }
 
 
-export default Mydashboard
+export default Simulation

@@ -531,7 +531,7 @@ const Chapter = () =>{
                 <Grid container className={classes.nextExercise} >
                     <Grid item sm={6}>
                         <Grid container justify="center">
-                        <Button variant="outlined" color="primary">
+                        <Button variant="outlined" color="primary" component={Link} to="/ChemProCourse">
                             Back
                         </Button>
                         </Grid>
