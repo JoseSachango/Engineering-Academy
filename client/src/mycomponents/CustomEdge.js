@@ -16,13 +16,16 @@ export default function CustomEdge({
   const edgePath = getSmoothStepPath({ sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition });
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
   const streamNumber = 0
+  
+  console.log("This is the style from the custom edge compoonent: ",style)
   return (
     <>
       <path id={id} style={style} className="react-flow__edge-path" d={edgePath} markerEnd={markerEnd} />
       <text>
         <textPath href={`#${id}`} style={{ fontSize: '12px' }} startOffset="50%" textAnchor="middle">
           {/*Find a way to get unique id's everytime an edge is made */}
-          {`${streamNumber+1}`}
+         
+          
         </textPath>
       </text>
      

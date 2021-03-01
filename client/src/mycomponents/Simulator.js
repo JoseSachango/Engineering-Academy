@@ -4,7 +4,10 @@ import ReactFlow, {
   addEdge,
   removeElements,
   Controls,
-  Handle
+  Handle, 
+  updateEdge,
+  
+  MiniMap
 } from 'react-flow-renderer';
 import Sidebar from './sidebar';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -15,8 +18,12 @@ import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
+import TextField from '@material-ui/core/TextField';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import PropTypes from 'prop-types';
 //import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -91,6 +98,21 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
     },
+    tabContent: {
+        height: 400,
+        width: 450
+    },
+    tabContentSpacing: {
+        '& .MuiTextField-root': {
+          margin: theme.spacing(1),
+          width: '25ch',
+        },
+      },
+    rootTabs: {
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+      },
     drawer: {
       [theme.breakpoints.up('sm')]: {
         width: drawerWidth,
@@ -212,7 +234,71 @@ const useStyles = makeStyles((theme) => ({
     chart3:{
       marginTop: "50px",
       marginBottom: "50px"
-    }
+    },
+    break: {
+        breakK:"2"
+
+
+
+
+    },
+
+
+
+
+
+    appBar2: {
+        transition: theme.transitions.create(['margin', 'width'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+      },
+      appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['margin', 'width'], {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginRight: drawerWidth,
+      },
+      title2: {
+        flexGrow: 1,
+      },
+      hide: {
+        display: 'none',
+      },
+      drawer2: {
+        width: drawerWidth,
+        flexShrink: 0,
+      },
+      drawerPaper2: {
+        width: drawerWidth,
+      },
+      drawerHeader2: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-start',
+      },
+      content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        marginRight: -drawerWidth,
+      },
+      contentShift: {
+        transition: theme.transitions.create('margin', {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginRight: 0,
+      },
+
 }))
 
 
@@ -241,6 +327,17 @@ const Simulation = (props) => {
             const theme = useTheme();
             const [mobileOpen, setMobileOpen] = React.useState(false);
             const [open, setOpen] = React.useState(false);
+            const [open2, setOpen2] = React.useState(false);//Second drawer
+
+//-----------------------------------------------------------------------------------------------------------Second drawer code
+const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+//-----------------------------------------------------------------------------------------------------------Second drawer code end
             
 
  //----------------------------------------------------------------------------------------------------------Everthing for the flow diagram
@@ -257,12 +354,16 @@ const Simulation = (props) => {
 
 
 
-
+  // gets called after end of edge gets dragged to another source or target
+  const onEdgeUpdate = (oldEdge, newConnection) =>
+    setElements((els) => updateEdge(oldEdge, newConnection, els));
   const onConnect = (params) => {
     //Write something here that does a calculation on params.sourceHandle use data.text or data.whatever
     setSourceHandle(JSON.parse(params.sourceHandle))
     setTargetId(params.target)
-    setElements((els) => addEdge({ ...params, animated: true, style: { stroke: '#000' } }, els) )
+
+    console.log("This is the params variable created when onConnect runs: ",params)
+    setElements((els) => addEdge({ ...params, label:`${params.target.split("-")[1]}`,type:"smoothstep", animated: true, style: { stroke: '#000' },  }, els) )
 
     console.log("This is the params variable: ",params)
     console.log("These are all the elements:  ",elements)
@@ -366,7 +467,7 @@ const Simulation = (props) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   };
-  const graphStyles = { width: "100%", height: "300px" };
+  const graphStyles = { width: "100%", height: "400px" };
   const onDrop = (event) => {
     event.preventDefault();
     const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
@@ -384,7 +485,7 @@ const Simulation = (props) => {
       sourcePosition: typeO.sourcePosition,
       targetPosition: typeO.targetPosition,
       position,
-      data: { label: `${typeO.name} node`,text:"all the info here",mass:"",energy:"", properties:{} },
+      data: { label: `${typeO.name} node`,text:"all the info here" },
       
     };
     
@@ -416,7 +517,7 @@ const Simulation = (props) => {
     return (
       <div style={customNodeStyles}>
         <Handle type="target" position="left" style={{ borderRadius: 0 }} />
-        <div>{data.text}</div>
+        <div>{data.label}</div>
         <Handle
           type="source"
           position="right"
@@ -442,7 +543,78 @@ const Simulation = (props) => {
   
 
 //----------------------------------------------------------------------------------------------------End of everything for the flow diagram
-          
+
+//----------------------------------------------------------------------------------------------------Tabs for property data info
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`scrollable-auto-tabpanel-${index}`}
+        aria-labelledby={`scrollable-auto-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `scrollable-auto-tab-${index}`,
+      'aria-controls': `scrollable-auto-tabpanel-${index}`,
+    };
+  }
+
+const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const currencies = [
+    {
+      value: 'Celsius',
+      label: 'C',
+    },
+    {
+      value: 'Farenheit',
+      label: 'F',
+    },
+    {
+      value: 'Kelvin',
+      label: 'K',
+    },
+  
+  ];
+
+  const [temperature, setTemperature] = React.useState('Celsius');
+
+  const handleChangeTemperature = (event) => {
+    setTemperature(event.target.value);
+  };
+
+  
+  const [Pressure, setPressure] = React.useState('Celsius');
+
+  const handleChangePressure = (event) => {
+    setPressure(event.target.value);
+  };
+  
+//----------------------------------------------------------------------------------------------------End of Tabs for property data info
             
             
 
@@ -514,16 +686,9 @@ const Simulation = (props) => {
        
            //---------------------------End of card with header
           
-
             const handleDrawerToggle = () => {
-              setMobileOpen(!mobileOpen);
+                setMobileOpen(!mobileOpen);
             };
-
-            const sidebarIcons = {
-                Dashboard: <Dashboard/>,
-                Course : <Book/>,
-                Tables: <Table />
-            }
 
 
 
@@ -537,38 +702,7 @@ const Simulation = (props) => {
 
 
             //-----------------------------------------Data xgrid
-            const columns = [
-              { field: 'id', headerName: 'ID', width: 70 },
-              { field: 'firstName', headerName: 'First name', width: 130 },
-              { field: 'lastName', headerName: 'Last name', width: 130 },
-              {
-                field: 'age',
-                headerName: 'Age',
-                type: 'number',
-                width: 90,
-              },
-              {
-                field: 'fullName',
-                headerName: 'Full name',
-                description: 'This column has a value getter and is not sortable.',
-                sortable: false,
-                width: 160,
-                valueGetter: (params) =>
-                  `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-              },
-            ];
-            
-            const rows = [
-              { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-              { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-              { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-              { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-              { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-              { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-              { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-              { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-              { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-            ];
+         
 
             
             //-----------------------------------------End of data xgrid
@@ -592,7 +726,7 @@ const Simulation = (props) => {
                             <>
                                 <ListItem button key={text}  onClick={handleClick}>
                             
-                                <ListItemIcon>{sidebarIcons[text] ?  sidebarIcons[text] : null}</ListItemIcon>
+                                
 
 
                                     <ListItemText primary={text} /> 
@@ -620,7 +754,7 @@ const Simulation = (props) => {
                         (
                             <ListItem button key={text}  >
                                 
-                                <ListItemIcon>{sidebarIcons[text] ?  sidebarIcons[text] : null}</ListItemIcon>
+                               
 
 
                                 <ListItemText primary={text} /> 
@@ -644,8 +778,7 @@ const Simulation = (props) => {
 
           
             const container = window !== undefined ? () => window().document.body : undefined;
-            console.log(sidebarIcons.Book)
-
+           
             return (
                 
                 !isAuthenticated&&(
@@ -667,7 +800,7 @@ const Simulation = (props) => {
                         </IconButton>
                         <Grid item sm={11}>
                         <Typography variant="h6" noWrap>
-                        Dashboard
+                        Simulator
                         </Typography>
 
                         </Grid>
@@ -700,6 +833,18 @@ const Simulation = (props) => {
                                     </Grow>
                                 )}
                                 </Popper>
+
+                                {/*Code for opening second drawer*/}
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    edge="end"
+                                    onClick={handleDrawerOpen}
+                                    className={clsx(open && classes.hide)}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                {/*Code for opening second drawer end */}
 
 
 
@@ -743,9 +888,37 @@ const Simulation = (props) => {
                         {drawer}
                         </Drawer>
                     </Hidden>
+
+
+                    {/*Second drawer to the right */}
+                       {/**/} 
+                        <Drawer
+                            className={classes.drawer}
+                            variant="persistent"
+                            anchor="right"
+                            open={open}
+                            classes={{
+                            paper: classes.drawerPaper,
+                            }}
+                        >
+                            <div className={classes.drawerHeader}>
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                            </div>
+                            <Divider />
+                            <div className="description" style={{marginBottom:"10px"}}>Process Units:</div>
+                            <Sidebar/>
+
+                            <Divider />
+                        </Drawer>
+                    {/*End of second drawer to the right */}
                     </nav>
+
+
+
                     {/*Dashboard content*/}
-                    <main  style={{backgroundColor: grey[100]}}  className={classes.content} >
+                    <main  style={{backgroundColor: grey[20]}}  className={classes.content} >
                    
                     
                     <div className={classes.toolbar} />
@@ -756,7 +929,8 @@ const Simulation = (props) => {
         
                                     <div className="reactflow-wrapper" ref={reactFlowWrapper}>
                                         <ReactFlow
-                                            edgeTypes={edgeTypes}
+                                           
+                                            
                                             nodeTypes={nodeTypes}
                                             elements={elements}
                                             onConnect={onConnect}
@@ -768,12 +942,28 @@ const Simulation = (props) => {
                                             style={graphStyles}
                                             
                                         >
+
                                             <Controls />
+                                            <MiniMap
+                                            nodeColor={(node) => {
+                                                switch (node.type) {
+                                                case 'input':
+                                                    return 'red';
+                                                case 'default':
+                                                    return '#00ff00';
+                                                case 'output':
+                                                    return 'rgb(0,0,255)';
+                                                default:
+                                                    return '#eee';
+                                                }
+                                            }}
+                                            nodeStrokeWidth={3}
+                                            />
                                         </ReactFlow>
                                     
                                     </div>
                                     <Grid container style={{backgroundColor: grey[500]}} >
-                                            <Sidebar />
+                                           {/*
                                             <label>label:</label>
                                                     <input
                                                         value={nodeName}
@@ -789,6 +979,7 @@ const Simulation = (props) => {
                                                         value={nodeEnergy}
                                                         onChange={(evt) => setNodeEnergy(evt.target.value)}
                                                     />
+                                            */}
 
                                     </Grid>
                             </ReactFlowProvider>
@@ -796,8 +987,58 @@ const Simulation = (props) => {
                          
                         </div>
 
+                        {/*Tabs for property data */}
+                        <div className={classes.rootTabs}>
+                            <AppBar position="static"  style={{backgroundColor:grey[400]}} >
+                                <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                indicatorColor="primary"
+                                textColor="primary"
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                aria-label="scrollable auto tabs example"
+                                >
+                                <Tab label="Specifications" {...a11yProps(0)} />
+                                <Tab label="Item Two" {...a11yProps(1)} />
+                                <Tab label="Item Three" {...a11yProps(2)} />
+                                <Tab label="Item Four" {...a11yProps(3)} />
+                                <Tab label="Item Five" {...a11yProps(4)} />
+                                <Tab label="Item Six" {...a11yProps(5)} />
+                                <Tab label="Item Seven" {...a11yProps(6)} />
+                                </Tabs>
+                            </AppBar>
+                            <TabPanel value={value} index={0}>
+                                <Grid container justify="left" alignItems="center">
+                                    
+                                           {/*Table goes here */}
+                                    
+                             
+                                </Grid>
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                                Item Two
+                            </TabPanel>
+                            <TabPanel value={value} index={2}>
+                                Item Three
+                            </TabPanel>
+                            <TabPanel value={value} index={3}>
+                                Item Four
+                            </TabPanel>
+                            <TabPanel value={value} index={4}>
+                                Item Five
+                            </TabPanel>
+                            <TabPanel value={value} index={5}>
+                                Item Six
+                            </TabPanel>
+                            <TabPanel value={value} index={6}>
+                                Item Seven
+                            </TabPanel>
+                        </div>
+                        {/*End of Tabs for property data */}
+
                     </main>
-                    {/*Dashboard content*/}
+                    {/*Dashboard content end*/}
                    
                 </div>
                 )
