@@ -90,7 +90,7 @@ import Box from '@material-ui/core/Box';
 import { DataGrid } from '@material-ui/data-grid';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import axios from "axios"
-import CustomEdge from './CustomEdge';//For the flow diagram
+
 
 const drawerWidth = 240;
 
@@ -310,7 +310,7 @@ const initialElements = [
     
   ];
   let id = 0;
-  const getId = () => `horizontal-${id++}`;
+  const getId = () => `Unit-${id++}`;
 //-----------------------------------------End of for the flow diagram
 
 const Simulation = (props) => {
@@ -485,7 +485,7 @@ const handleDrawerOpen = () => {
       sourcePosition: typeO.sourcePosition,
       targetPosition: typeO.targetPosition,
       position,
-      data: { label: `${typeO.name} node`,text:"all the info here" },
+      data: { label: `${typeO.name} (Unit-${id})`,text:"all the info here" },
       
     };
     
@@ -502,10 +502,7 @@ const handleDrawerOpen = () => {
     //console.log("This is the new initialelements array: ",elements)
   };
 
-  const edgeTypes = {
-    default: CustomEdge,
-  };
-
+ 
   //----------------------------Custom nodes
   const customNodeStyles = {
     background: '#9CA8B3',
@@ -517,18 +514,19 @@ const handleDrawerOpen = () => {
     return (
       <div style={customNodeStyles}>
         <Handle type="target" position="left" style={{ borderRadius: 0 }} />
+        <Handle type="target" position="top" style={{ borderRadius: 0 }} />
         <div>{data.label}</div>
         <Handle
           type="source"
           position="right"
           id={JSON.stringify(data)}
-          style={{ top: '30%', borderRadius: 0 }}
+          style={{ borderRadius: 0 }}
         />
         <Handle
           type="source"
-          position="right"
+          position="bottom"
           id="b"
-          style={{ top: '70%', borderRadius: 0 }}
+          style={{  borderRadius: 0 }}
         />
       </div>
     );

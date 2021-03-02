@@ -14,6 +14,7 @@ import ForceandWeight from "./mycomponents/exercises/ForceandWeightChp1"
 import ScientificNotation from "./mycomponents/exercises/ScientificNotationChp1";
 import Estimation from "./mycomponents/exercises/EstimationChp1";
 import Simulator from "./mycomponents/Simulator";
+import Table from "./mycomponents/Throwawaycomponent"
 
 
 
@@ -32,7 +33,10 @@ function App() {
                 <ChemProCourse />
               </Route>
               <Route exact path={["/Simulator"]}>
-                <Simulator/>
+                {/*
+                  <Simulator/>
+                 */}
+                <Table/>
               </Route>
               <Route exact path={["/ChemProCourse/Chapter1"]}>
                 <Chapter />
