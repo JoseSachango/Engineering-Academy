@@ -92,7 +92,7 @@ const LandingPage = () =>{
 
     return (
 
-        isAuthenticated && (
+        !isAuthenticated && (
             <>
                 <AppBar position="static">
                             <Toolbar>

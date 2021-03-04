@@ -63,16 +63,7 @@ const DocumentationExperiment = ()=>{
                                 impression.
                             </h4>
                             <br />
-                            <Button
-                                color="danger"
-                                size="lg"
-                                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <i className="fas fa-play" />
-                                Watch video
-                            </Button>
+                           
                             </GridItem>
                         </GridContainer>
                         </div>

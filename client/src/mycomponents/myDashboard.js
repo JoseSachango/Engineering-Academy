@@ -15,6 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
+import Energy from '@material-ui/icons/Whatshot'
 import User from '@material-ui/icons/Person';
 import { Link } from "react-router-dom";
 
@@ -34,6 +35,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
+import Production from '@material-ui/icons/Build'
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
@@ -58,7 +60,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
-import { red } from '@material-ui/core/colors';
+import { red,green,blue } from '@material-ui/core/colors';
 import Revenue from '@material-ui/icons/AccountBalance'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -535,7 +537,7 @@ const Mydashboard = (props) => {
             console.log(sidebarIcons.Book)
             return (
                 
-                !isAuthenticated&&(
+                isAuthenticated&&(
                     
                 <div className={classes.root}>
                 
@@ -580,7 +582,7 @@ const Mydashboard = (props) => {
                                         <MenuList autoFocusItem={openMenuList} id="menu-list-grow" onKeyDown={handleListKeyDownMenuList}>
                                             <MenuItem onClick={handleCloseMenuList}>Profile</MenuItem>
                                             <MenuItem onClick={handleCloseMenuList}>My account</MenuItem>
-                                            <MenuItem onClick={handleCloseMenuList}>Logout</MenuItem>
+                                            <MenuItem onClick={()=>logout()}>Logout</MenuItem>
                                         </MenuList>
                                         </ClickAwayListener>
                                     </Paper>
@@ -638,100 +640,222 @@ const Mydashboard = (props) => {
                     <div className={classes.toolbar} />
                         <div>
                           
-                           
-                            <Grid container>
-                                    <Grid item >
-                                      <Paper  elevation={3} className={classes.cardheader} >
-                                          <Revenue style={{ color: grey[50] }}/>
-                                      </Paper>
-                                     
+                           <Grid container>
+                             <Grid item sm={4}>
+                                    <Grid container>
+                                            <Grid item >
+                                              <Paper  elevation={3} className={classes.cardheader} style={{backgroundColor:green[500]}} >
+                                                  <Revenue style={{ color: grey[50] }}/>
+                                              </Paper>
+                                            
+                                            </Grid>
                                     </Grid>
-                            </Grid>
-                            <Card className={classes.card} >
-                                
-                               
-                                <CardMedia
-                                    className={classes.media}
-                                    image= "../../components/DocumentationExperiment/assets/img/AmineTreatingPFD.png"
-                                    title="Paella dish"
-                                />
-                                <Grid container>
+                                    <Card className={classes.card} >
+                                        
+                                      
+                                        <CardMedia
+                                            className={classes.media}
+                                            image= "../../components/DocumentationExperiment/assets/img/AmineTreatingPFD.png"
+                                            title="Paella dish"
+                                        />
+                                        <Grid container>
 
-                                      <Grid item sm={6}>
+                                              <Grid item sm={6}>
 
-                                      </Grid>
-                                      <Grid item sm={6}>
-                                            <CardContent className={classes.cardcontent}>
-                                              <Typography  variant="body2" color="textSecondary" component="p">
-                                              Revenue
-                                              </Typography>
-                                              <Typography className={classes.cardtitle} variant="body2" color="textSecondary" component="p">
-                                                $34,000
-                                              </Typography>
-                                          </CardContent>
-                                      </Grid>
+                                              </Grid>
+                                              <Grid item sm={6}>
+                                                    <CardContent className={classes.cardcontent}>
+                                                      <Typography  variant="body2" color="textSecondary" component="p">
+                                                      Revenue
+                                                      </Typography>
+                                                      <Typography className={classes.cardtitle} variant="body2" color="textSecondary" component="p">
+                                                        $34,000
+                                                      </Typography>
+                                                  </CardContent>
+                                              </Grid>
+                                    
+                                        </Grid>
+                                      
+                                        <Divider />
+                                        <CardActions disableSpacing>
+                                          
+                                            <IconButton
+                                            className={clsx(classes.expand, {
+                                                [classes.expandOpen]: expandedCard,
+                                            })}
+                                            onClick={handleExpandClickCard}
+                                            aria-expanded={expandedCard}
+                                            aria-label="show more"
+                                            >
+                                            <ExpandMoreIcon />
+                                            </IconButton>
+                                        </CardActions>
+                                        <Collapse in={expandedCard} timeout="auto" unmountOnExit>
+                                            <CardContent>
+                                            <Typography paragraph>CAPEX:</Typography>
+                                            <Typography paragraph>
+                                                
+                                            </Typography>
+                                            <Typography paragraph>
+                                              
+                                            </Typography>
+                                            <Typography paragraph>
+                                              
+                                            </Typography>
+                                            <Typography>
+                                                
+                                            </Typography>
+                                            </CardContent>
+                                        </Collapse>
+                                    </Card>
                              
-                                </Grid>
-                              
-                                <Divider />
-                                <CardActions disableSpacing>
-                                    <IconButton aria-label="add to favorites">
-                                    <FavoriteIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="share">
-                                    <ShareIcon />
-                                    </IconButton>
-                                    <IconButton
-                                    className={clsx(classes.expand, {
-                                        [classes.expandOpen]: expandedCard,
-                                    })}
-                                    onClick={handleExpandClickCard}
-                                    aria-expanded={expandedCard}
-                                    aria-label="show more"
-                                    >
-                                    <ExpandMoreIcon />
-                                    </IconButton>
-                                </CardActions>
-                                <Collapse in={expandedCard} timeout="auto" unmountOnExit>
-                                    <CardContent>
-                                    <Typography paragraph>Method:</Typography>
-                                    <Typography paragraph>
-                                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                                        minutes.
-                                    </Typography>
-                                    <Typography paragraph>
-                                        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-                                        heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-                                        browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-                                        and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-                                        pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-                                        saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-                                    </Typography>
-                                    <Typography paragraph>
-                                        Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-                                        without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-                                        medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-                                        again without stirring, until mussels have opened and rice is just tender, 5 to 7
-                                        minutes more. (Discard any mussels that don’t open.)
-                                    </Typography>
-                                    <Typography>
-                                        Set aside off of the heat to let rest for 10 minutes, and then serve.
-                                    </Typography>
-                                    </CardContent>
-                                </Collapse>
-                            </Card>
-                              {/*Chart content*/}
-                                <Paper className={classes.chart}>
-                                  <Chart
-                                    data={data}
-                                  >
-                                    <ArgumentAxis />
-                                    <ValueAxis />
 
-                                    <LineSeries valueField="value" argumentField="argument" />
-                                  </Chart>
-                                </Paper>
-                              {/*Chart content end*/}
+
+                             </Grid>
+                              <Grid item sm={4}>
+
+                                      <Grid container>
+                                            <Grid item >
+                                              <Paper  elevation={3} className={classes.cardheader} >
+                                                  <Energy style={{ color: grey[50] }}/>
+                                              </Paper>
+                                            
+                                            </Grid>
+                                    </Grid>
+                                    <Card className={classes.card} >
+                                        
+                                      
+                                        <CardMedia
+                                            className={classes.media}
+                                            image= "../../components/DocumentationExperiment/assets/img/AmineTreatingPFD.png"
+                                            title="Paella dish"
+                                        />
+                                        <Grid container>
+
+                                              <Grid item sm={6}>
+
+                                              </Grid>
+                                              <Grid item sm={6}>
+                                                    <CardContent className={classes.cardcontent}>
+                                                      <Typography  variant="body2" color="textSecondary" component="p">
+                                                      Energy
+                                                      </Typography>
+                                                      <Typography className={classes.cardtitle} variant="body2" color="textSecondary" component="p">
+                                                        500 kcal
+                                                      </Typography>
+                                                  </CardContent>
+                                              </Grid>
+                                    
+                                        </Grid>
+                                      
+                                        <Divider />
+                                        <CardActions disableSpacing>
+                                          
+                                            <IconButton
+                                            className={clsx(classes.expand, {
+                                                [classes.expandOpen]: expandedCard,
+                                            })}
+                                            onClick={handleExpandClickCard}
+                                            aria-expanded={expandedCard}
+                                            aria-label="show more"
+                                            >
+                                            <ExpandMoreIcon />
+                                            </IconButton>
+                                        </CardActions>
+                                        <Collapse in={expandedCard} timeout="auto" unmountOnExit>
+                                            <CardContent>
+                                            <Typography paragraph>CAPEX:</Typography>
+                                            <Typography paragraph>
+                                                
+                                            </Typography>
+                                            <Typography paragraph>
+                                              
+                                            </Typography>
+                                            <Typography paragraph>
+                                              
+                                            </Typography>
+                                            <Typography>
+                                                
+                                            </Typography>
+                                            </CardContent>
+                                        </Collapse>
+                                    </Card>
+                                    
+
+                              </Grid>
+                              <Grid item sm={4}>
+
+                                        <Grid container>
+                                              <Grid item >
+                                                <Paper  elevation={3} className={classes.cardheader} style={{backgroundColor:blue[500]}}>
+                                                    <Production style={{ color: grey[50] }}/>
+                                                </Paper>
+                                              
+                                              </Grid>
+                                      </Grid>
+                                      <Card className={classes.card} >
+                                          
+                                        
+                                          <CardMedia
+                                              className={classes.media}
+                                              image= "../../components/DocumentationExperiment/assets/img/AmineTreatingPFD.png"
+                                              title="Paella dish"
+                                          />
+                                          <Grid container>
+
+                                                <Grid item sm={6}>
+
+                                                </Grid>
+                                                <Grid item sm={6}>
+                                                      <CardContent className={classes.cardcontent}>
+                                                        <Typography  variant="body2" color="textSecondary" component="p">
+                                                        Production
+                                                        </Typography>
+                                                        <Typography className={classes.cardtitle} variant="body2" color="textSecondary" component="p">
+                                                          500 t/h
+                                                        </Typography>
+                                                    </CardContent>
+                                                </Grid>
+                                      
+                                          </Grid>
+                                        
+                                          <Divider />
+                                          <CardActions disableSpacing>
+                                            
+                                              <IconButton
+                                              className={clsx(classes.expand, {
+                                                  [classes.expandOpen]: expandedCard,
+                                              })}
+                                              onClick={handleExpandClickCard}
+                                              aria-expanded={expandedCard}
+                                              aria-label="show more"
+                                              >
+                                              <ExpandMoreIcon />
+                                              </IconButton>
+                                          </CardActions>
+                                          <Collapse in={expandedCard} timeout="auto" unmountOnExit>
+                                              <CardContent>
+                                              <Typography paragraph>CAPEX:</Typography>
+                                              <Typography paragraph>
+                                                  
+                                              </Typography>
+                                              <Typography paragraph>
+                                                
+                                              </Typography>
+                                              <Typography paragraph>
+                                                
+                                              </Typography>
+                                              <Typography>
+                                                  
+                                              </Typography>
+                                              </CardContent>
+                                          </Collapse>
+                                      </Card>
+                             
+
+                              </Grid>
+                           </Grid>
+                            
                             
                             
                               {/* 3rd chart */}
@@ -760,7 +884,7 @@ const Mydashboard = (props) => {
                                       scaleName="total"
                                     />
                                     <Title
-                                      text="Noisy and Original signals"
+                                      text="Energy Use per Unit"
                                       textComponent={TitleText}
                                     />
 
@@ -768,83 +892,7 @@ const Mydashboard = (props) => {
                                   </Chart>
                                 </Paper>
                               {/*3rd chart end */}
-                              {/*Chart tabs */}
-                                <div className={classes.tabs}>
-                                  <AppBar position="static" color="default">
-                                    <Tabs
-                                      value={valueTabs}
-                                      onChange={handleChangeTabs}
-                                      variant="scrollable"
-                                      scrollButtons="on"
-                                      indicatorColor="primary"
-                                      textColor="primary"
-                                      aria-label="scrollable force tabs example"
-                                    >
-                                      <Tab label="Chart One" icon={<PhoneIcon />} {...a11yProps(0)} />
-                                      <Tab label="Chart Two" icon={<FavoriteIcon />} {...a11yProps(1)} />
-                                      <Tab label="Chart Three" icon={<PersonPinIcon />} {...a11yProps(2)} />
-                                      <Tab label="Chart Four" icon={<HelpIcon />} {...a11yProps(3)} />
-                                      <Tab label="Chart Five" icon={<ShoppingBasket />} {...a11yProps(4)} />
-                                      <Tab label="Chart Six" icon={<ThumbDown />} {...a11yProps(5)} />
-                                      <Tab label="Chart Seven" icon={<ThumbUp />} {...a11yProps(6)} />
-                                    </Tabs>
-                                  </AppBar>
-                                  <TabPanel value={valueTabs} index={0}>
-                                      <Paper elevation={3} className={classes.chart3}>
-                                        <Chart
-                                          data={chartData}
-                                        >
-                                          <ValueScale name="sale" />
-                                          <ValueScale name="total" />
-
-                                          <ArgumentAxis />
-                                          <ValueAxis scaleName="sale" showGrid={false} showLine showTicks />
-                                          <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
-
-                                          <BarSeries
-                                            name="Units Sold"
-                                            valueField="sale"
-                                            argumentField="month"
-                                            scaleName="sale"
-                                          />
-
-                                          <LineSeries
-                                            name="Total Transactions"
-                                            valueField="total"
-                                            argumentField="month"
-                                            scaleName="total"
-                                          />
-                                                  <Title
-                                                    text="Noisy and Original signals"
-                                                    textComponent={TitleText}
-                                                  />
-
-                                          <Legend />
-                                        </Chart>
-                                      </Paper>
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={1}>
-                                    <div style={{ height: 400, width: '100%' }}>
-                                      <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
-                                    </div>
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={2}>
-                                    Item Three
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={3}>
-                                    Item Four
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={4}>
-                                    Item Five
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={5}>
-                                    Item Six
-                                  </TabPanel>
-                                  <TabPanel value={valueTabs} index={6}>
-                                    Item Seven
-                                  </TabPanel>
-                                </div>
-                              {/*Char tabs end */}
+                            
                          
                         </div>
 

@@ -671,6 +671,7 @@ const [value, setValue] = React.useState(0);
             setOpenMenuList(false);
           };
         
+        
           function handleListKeyDownMenuList(event) {
             if (event.key === 'Tab') {
               event.preventDefault();
@@ -845,7 +846,7 @@ const [value, setValue] = React.useState(0);
                                         <MenuList autoFocusItem={openMenuList} id="menu-list-grow" onKeyDown={handleListKeyDownMenuList}>
                                             <MenuItem onClick={handleCloseMenuList}>Profile</MenuItem>
                                             <MenuItem onClick={handleCloseMenuList}>My account</MenuItem>
-                                            <MenuItem onClick={handleCloseMenuList}>Logout</MenuItem>
+                                            <MenuItem onClick={()=>logout()}>Logout</MenuItem>
                                         </MenuList>
                                         </ClickAwayListener>
                                     </Paper>
@@ -1019,9 +1020,9 @@ const [value, setValue] = React.useState(0);
                                 aria-label="scrollable auto tabs example"
                                 >
                                 <Tab label="Specifications" {...a11yProps(0)} />
-                                <Tab label="Item Two" {...a11yProps(1)} />
-                                <Tab label="Item Three" {...a11yProps(2)} />
-                                <Tab label="Item Four" {...a11yProps(3)} />
+                                <Tab label="Calculating Pressure" {...a11yProps(1)} />
+                                <Tab label="Calculating Enthalpy" {...a11yProps(2)} />
+                                <Tab label="Calculating Physical Properties" {...a11yProps(3)} />
                                 <Tab label="Item Five" {...a11yProps(4)} />
                                 <Tab label="Item Six" {...a11yProps(5)} />
                                 <Tab label="Item Seven" {...a11yProps(6)} />
@@ -1044,10 +1045,10 @@ const [value, setValue] = React.useState(0);
                                 </Grid>
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                Item Two
+                               Raults Law
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                Item Three
+                                Clausius-Claperyon
                             </TabPanel>
                             <TabPanel value={value} index={3}>
                                 Item Four

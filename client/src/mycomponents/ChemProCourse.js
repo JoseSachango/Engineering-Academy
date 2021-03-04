@@ -173,9 +173,9 @@ export default function ChemProCourse() {
 
 
   React.useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = () => {
       setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    }, 800);
+    }
     return () => {
       clearInterval(timer);
     };

@@ -28,7 +28,11 @@ function App() {
            
             <Switch>
               <Route exact path={["/"]}>
-                {/*<DocumentationExperiment/>*/}
+                {/*<DocumentationExperiment/>
+                
+                
+                */}
+                <DocumentationExperiment/>
                 <Mydashboard />
               </Route>
               <Route exact path={["/ChemProCourse"]}>
