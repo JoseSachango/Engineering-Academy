@@ -15,6 +15,8 @@ import ScientificNotation from "./mycomponents/exercises/ScientificNotationChp1"
 import Estimation from "./mycomponents/exercises/EstimationChp1";
 import Simulator from "./mycomponents/Simulator";
 import Table from "./mycomponents/Throwawaycomponent"
+import UnitTable from "./mycomponents/unitTable"
+import NewProject from "./mycomponents/newProjectComponents"
 
 
 
@@ -32,11 +34,15 @@ function App() {
               <Route exact path={["/ChemProCourse"]}>
                 <ChemProCourse />
               </Route>
+              <Route exact path={["/NewProject"]}>
+                <NewProject />
+              </Route>
               <Route exact path={["/Simulator"]}>
                 {/*
-                  <Simulator/>
-                 */}
                 <Table/>
+                 <UnitTable/>
+                 */}
+                  <Simulator/>
               </Route>
               <Route exact path={["/ChemProCourse/Chapter1"]}>
                 <Chapter />

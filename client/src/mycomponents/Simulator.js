@@ -9,6 +9,7 @@ import ReactFlow, {
   
   MiniMap
 } from 'react-flow-renderer';
+import UnitTable from "./unitTable"
 import Sidebar from './sidebar';
 import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -23,6 +24,7 @@ import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import axios from "axios"
 import PropTypes from 'prop-types';
 //import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
@@ -32,7 +34,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import User from '@material-ui/icons/Person';
 import { Link } from "react-router-dom";
-
+import StreamsTable from "./streamsTable"
 import Dashboard from '@material-ui/icons/Dashboard'
 import Book from '@material-ui/icons/MenuBook'
 import MenuIcon from '@material-ui/icons/Menu';
@@ -89,7 +91,7 @@ import Box from '@material-ui/core/Box';
 //import Paper from '@material-ui/core/Paper';
 import { DataGrid } from '@material-ui/data-grid';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import axios from "axios"
+
 
 
 const drawerWidth = 240;
@@ -351,6 +353,9 @@ const handleDrawerOpen = () => {
   const [nodeEnergy, setNodeEnergy] = useState("")
   const [elementClickedId, setElementClickedId] = useState("")
   const [elementClickedLabel, setElementClickedLabel] = useState("")
+  const [unitTable,setUnitTable] = useState()
+  const [sourceStream, setSourceStream] = useState()
+  const [targetStream,setTargetStream] = useState()
 
 
 
@@ -361,11 +366,16 @@ const handleDrawerOpen = () => {
     //Write something here that does a calculation on params.sourceHandle use data.text or data.whatever
     setSourceHandle(JSON.parse(params.sourceHandle))
     setTargetId(params.target)
+    setSourceStream(params.source.split("-")[1])
+    
+    setTargetStream(parseInt(params.source.split("-")[1])-1)
+
+    
 
     console.log("This is the params variable created when onConnect runs: ",params)
     setElements((els) => addEdge({ ...params, label:`${params.target.split("-")[1]}`,type:"smoothstep", animated: true, style: { stroke: '#000' },  }, els) )
 
-    console.log("This is the params variable: ",params)
+    
     console.log("These are all the elements:  ",elements)
   };//I Don't understand what's going on here.
 
@@ -394,8 +404,33 @@ const handleDrawerOpen = () => {
   //---------------------------------------useEffect for editing data in the node
   const onElementClick = (event, element) => {
     console.log('This is the click element: ', element)
-    setElementClickedId(element.id)
+    //make an axios get request for table information. If no information exists. Make an axios post request with the current rows variable and the element data label
+    axios.get("/api/unitTable/"+element.data.label).then(results=>{
+        console.log("This is the result from the axios get request to the /api/unitTable/:id endpoint: ",results)
+        setUnitTable(results)
+        console.log("This is the uniTable variable: ",unitTable)
+        
+        
+    }).catch(err=>{
+        console.log("This is the error message that was recieved from the /api/unitTable endpoint:",err)
+        
+        setUnitTable([])
+        /*
+        axios.post("/api/unitTable/",{unitName:element.data.label, rows:rows}).then(results=>{
+            console.log("The post query was successfully made: ", results)
+        }).catch(err=>{
+            console.log("There was an error with the post to the /api/unitTable endpoint: ",err)
+        })*/
+    })
+
+
     
+
+    //----------------------------------------------------------
+
+
+    setElementClickedId(element.id)
+    setUnitTable()
     setNodeName(element.data.label)
     setNodeMass(element.data.mass)
     setNodeEnergy(element.data.energy)
@@ -483,6 +518,7 @@ const handleDrawerOpen = () => {
       id: getId(),
       type: typeO.type,
       sourcePosition: typeO.sourcePosition,
+      
       targetPosition: typeO.targetPosition,
       position,
       data: { label: `${typeO.name} (Unit-${id})`,text:"all the info here" },
@@ -720,33 +756,18 @@ const [value, setValue] = React.useState(0);
                 <List>
                   {['Saved Projects', 'New Project', 'Components', 'Methods'].map((text, index) => (
                     <>
-                        {text==="Course"? (
+                        {text==="New Project"? (
                             <>
-                                <ListItem button key={text}  onClick={handleClick}>
-                            
+                            <ListItem button key={text}  component={Link} to="/NewProject" >
                                 
+                               
 
 
-                                    <ListItemText primary={text} /> 
-                                    {open ? <ExpandLess /> : <ExpandMore />}
-                            
-                            
-                                </ListItem>
-                                <Collapse in={open} timeout="auto" unmountOnExit>
-                                        <List component="div" disablePadding>
-                                        <ListItem button className={classes.nested}>
-                                            <ListItemIcon>
-                                            <StarBorder />
-                                            </ListItemIcon>
-                                            <Link to="/ChemProCourse" role="button" className="btn btn-link">
-                                              <ListItemText primary="Chemical Processes" />
-                                            </Link>
-                                           
-                                           
-                                        </ListItem>
-                                     
-                                        </List>
-                                </Collapse>
+                                <ListItemText primary={text} /> 
+                                
+                                
+                                
+                            </ListItem>
                             </>
                         ):
                         (
@@ -1009,9 +1030,17 @@ const [value, setValue] = React.useState(0);
                             <TabPanel value={value} index={0}>
                                 <Grid container justify="left" alignItems="center">
                                     
-                                           {/*Table goes here */}
-                                    
-                             
+                                           {/*Table goes here 
+                                             
+                                           */}
+
+                                    {unitTable && (
+                                        <>
+                                        <UnitTable unitname={nodeName} source={sourceStream} target={targetStream}/>
+                                        <StreamsTable unitname={nodeName} source={sourceStream} target={targetStream}/>
+                                        </>
+                                    )}
+                                           
                                 </Grid>
                             </TabPanel>
                             <TabPanel value={value} index={1}>

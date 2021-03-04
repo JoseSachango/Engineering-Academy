@@ -297,7 +297,7 @@ export default function EnhancedTable() {
 
   const handleClick = (event, name) => {
 
-    setCompound(name)
+    
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
