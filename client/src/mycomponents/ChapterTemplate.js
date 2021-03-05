@@ -285,7 +285,7 @@ const ChapterTemplate = (props) =>{
 
 
     return (
-        !isAuthenticated&&(
+        isAuthenticated&&(
             <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>

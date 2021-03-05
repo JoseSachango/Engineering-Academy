@@ -84,7 +84,7 @@ const Estimation = () =>{
 
     return (
         
-        !isAuthenticated&&(
+        isAuthenticated&&(
 
             <Chaptertemplate 
             title={title} 

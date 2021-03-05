@@ -8,6 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
+import axios from "axios"
 import IconButton from '@material-ui/core/IconButton';
 //import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
@@ -76,7 +77,7 @@ import Box from '@material-ui/core/Box';
 //import Paper from '@material-ui/core/Paper';
 import { DataGrid } from '@material-ui/data-grid';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import axios from "axios"
+
 
 import {
   Chart,
@@ -224,7 +225,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Mydashboard = (props) => {
 
-    const {loginWithRedirect,logout,isAuthenticated} = useAuth0();
+    const {loginWithRedirect,logout,isAuthenticated,user} = useAuth0();
+
+    
 
 
     const ChangeLocation = () =>{
@@ -334,12 +337,12 @@ const Mydashboard = (props) => {
                   //-------------------------------New chart data2
                   const dataObject = {
                     data: [
-                      { month: 'Jan', sale: 50, total: 987 },
-                      { month: 'Feb', sale: 100, total: 3000 },
-                      { month: 'March', sale: 30, total: 1100 },
-                      { month: 'April', sale: 107, total: 7100 },
-                      { month: 'May', sale: 95, total: 4300 },
-                      { month: 'June', sale: 150, total: 7500 },
+                      { month: 'HeatX', sale: 50, total: 987 },
+                      { month: 'Distillation', sale: 100, total: 3000 },
+                      { month: 'Pump', sale: 30, total: 1100 },
+                      { month: 'Valve', sale: 107, total: 7100 },
+                      { month: 'Tank', sale: 95, total: 4300 },
+                      { month: 'Production', sale: 150, total: 7500 },
                     ],
                   };
                 
@@ -540,7 +543,7 @@ const Mydashboard = (props) => {
                 isAuthenticated&&(
                     
                 <div className={classes.root}>
-                
+                  
                     <CssBaseline />
                     <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
@@ -561,7 +564,7 @@ const Mydashboard = (props) => {
 
                         </Grid>
                         <Grid item sm={1} justify="flex-end">
-
+                           
                             {/*MenuList*/}
                                 <Button
                                 ref={anchorRefMenuList}
@@ -692,7 +695,7 @@ const Mydashboard = (props) => {
                                         </CardActions>
                                         <Collapse in={expandedCard} timeout="auto" unmountOnExit>
                                             <CardContent>
-                                            <Typography paragraph>CAPEX:</Typography>
+                                            <Typography paragraph>Content:</Typography>
                                             <Typography paragraph>
                                                 
                                             </Typography>
@@ -764,7 +767,7 @@ const Mydashboard = (props) => {
                                         </CardActions>
                                         <Collapse in={expandedCard} timeout="auto" unmountOnExit>
                                             <CardContent>
-                                            <Typography paragraph>CAPEX:</Typography>
+                                            <Typography paragraph>Content:</Typography>
                                             <Typography paragraph>
                                                 
                                             </Typography>
@@ -835,7 +838,7 @@ const Mydashboard = (props) => {
                                           </CardActions>
                                           <Collapse in={expandedCard} timeout="auto" unmountOnExit>
                                               <CardContent>
-                                              <Typography paragraph>CAPEX:</Typography>
+                                              <Typography paragraph>Content:</Typography>
                                               <Typography paragraph>
                                                   
                                               </Typography>
@@ -871,18 +874,13 @@ const Mydashboard = (props) => {
                                     <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
 
                                     <BarSeries
-                                      name="Units Sold"
+                                      name="Energy"
                                       valueField="sale"
                                       argumentField="month"
                                       scaleName="sale"
                                     />
 
-                                    <LineSeries
-                                      name="Total Transactions"
-                                      valueField="total"
-                                      argumentField="month"
-                                      scaleName="total"
-                                    />
+                                  
                                     <Title
                                       text="Energy Use per Unit"
                                       textComponent={TitleText}
@@ -892,6 +890,11 @@ const Mydashboard = (props) => {
                                   </Chart>
                                 </Paper>
                               {/*3rd chart end */}
+                              {JSON.stringify(user)
+                              
+                             
+                              
+                              }
                             
                          
                         </div>

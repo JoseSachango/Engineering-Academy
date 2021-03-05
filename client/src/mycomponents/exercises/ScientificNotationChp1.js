@@ -49,7 +49,7 @@ const ScientificNotation = () =>{
 
     return (
         
-        !isAuthenticated&&(
+        isAuthenticated&&(
 
             <Chaptertemplate 
             title={title} 

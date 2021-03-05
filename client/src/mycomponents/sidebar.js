@@ -18,7 +18,7 @@ export default () => {
             <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
 
                 <div className="dndnode input" onDragStart={(event) => onDragStart(event, `{"type":"input","name":"Input", "sourcePosition": "right", "targetPosition": "left"  }`)} draggable >
-                    Input Node
+                    Initial Conditions
                 </div>
 
             </Button>
@@ -39,8 +39,29 @@ export default () => {
         </Grid>
         <Grid container>
             <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
-                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"output", "name":"Test", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
-                    Output Node
+                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"output", "name":"Pump", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
+                    Pump
+                </div>
+            </Button>           
+        </Grid>
+        <Grid container>
+            <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
+                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"output", "name":"Production", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
+                    Production
+                </div>
+            </Button>           
+        </Grid>
+        <Grid container>
+            <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
+                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"output", "name":"Tank", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
+                    Tank
+                </div>
+            </Button>           
+        </Grid>
+        <Grid container>
+            <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
+                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"output", "name":"Valve", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
+                    Valve
                 </div>
             </Button>           
         </Grid>

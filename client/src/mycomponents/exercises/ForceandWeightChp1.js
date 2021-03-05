@@ -20,7 +20,7 @@ const ForceandWeight = () =>{
 
     return (
         
-        !isAuthenticated&&(
+        isAuthenticated&&(
 
             <Chaptertemplate 
             title={title} 

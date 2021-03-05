@@ -216,6 +216,7 @@ export default function ChemProCourse() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={()=>logout()}>Logout</MenuItem>
     </Menu>
   );
 
@@ -262,7 +263,7 @@ export default function ChemProCourse() {
 
   return (
 
-    !isAuthenticated&&(
+    isAuthenticated&&(
             <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>

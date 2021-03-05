@@ -801,7 +801,7 @@ const [value, setValue] = React.useState(0);
            
             return (
                 
-                !isAuthenticated&&(
+                isAuthenticated&&(
                     
                 <div className={classes.root}>
                 

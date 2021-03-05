@@ -7,6 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import Exit from '@material-ui/icons/ExitToApp'
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -276,7 +277,7 @@ const Chapter = () =>{
               aria-haspopup="true"
               color="inherit"
             >
-              <AccountCircle />
+              <Exit />
             </IconButton>
             <p>Profile</p>
           </MenuItem>
@@ -287,14 +288,12 @@ const Chapter = () =>{
 
 
         const [state, setState] = React.useState({
-            checkedA: false,
-            checkedB: false,
-            checkedF: false,
+            
             checkedG: false,
           });
         
           const handleChangeCheckbox = (event) => {
-            setState({ ...state, [event.target.name]: event.target.checked });
+            setState({ ...state, checkedG: true});
           };
         
     //------------------------------Checkbox end
@@ -344,6 +343,12 @@ const Chapter = () =>{
 
     //-------------------------------TextArea
     const [valueTextArea, setValueTextArea] = React.useState('Controlled');
+    const [answer2,setAnswer2] = React.useState()
+    const [answer,setAnswer] = React.useState()
+    const [toggle,setToggle] = React.useState("disabled")
+    const [exerciseName, setExerciseName] = React.useState("Units and Dimensions")
+    const [noteTitle,setNoteTitle] = React.useState()
+    const [noteBody,setNoteBody] = React.useState()
 
     const handleChangeTextArea = (event) => {
       setValueTextArea(event.target.value);
@@ -353,7 +358,7 @@ const Chapter = () =>{
 
 
     return (
-        !isAuthenticated&&(
+        isAuthenticated&&(
             <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
@@ -401,7 +406,7 @@ const Chapter = () =>{
                                 color="inherit"
                                 component={Link} to="/ChemProCourse"
                                 >
-                                <AccountCircle  />
+                                <Exit />
                               </IconButton>
                             </Grid>
                     </Grid>
@@ -538,9 +543,16 @@ const Chapter = () =>{
                     </Grid>
                     <Grid item sm={6}>
                         <Grid container justify="center">
-                        <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion">
+                        {toggle==="disabled" ? (
+                            <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion" disabled>
                             Next
-                        </Button>
+                            </Button>
+                        ):(
+                            <Button variant="outlined" color="primary"  component={Link} to="/ChemProCourse/Chapter1/Conversion" >
+                            Next
+                            </Button>
+                        )}
+                        
                         </Grid>
                     </Grid>
                 </Grid>
@@ -582,7 +594,7 @@ const Chapter = () =>{
                                 </div>
                             </Typography>
                             <form className={classes.answer} noValidate autoComplete="off">
-                                <TextField id="outlined-basic" label="answer" variant="outlined"  size="small"/>
+                                <TextField id="outlined-basic" label="answer" variant="outlined"  size="small" value={answer} onChange={(evt)=>setAnswer(evt.target.value)}/>
                             </form>
                             <Typography paragraph style={{marginTop:"40px"}}>
                                 
@@ -595,8 +607,29 @@ const Chapter = () =>{
                                 </div>
                             </Typography>
                             <form className={classes.answer} noValidate autoComplete="off">
-                                <TextField id="outlined-basic" label="answer" variant="outlined"  size="small"/>
+                                <TextField id="outlined-basic" label="answer" variant="outlined"  size="small"  value={answer2} onChange={(evt)=>setAnswer2(evt.target.value) }/>
                             </form>
+                            <Grid container>
+                                 <Grid item sm={9}>
+
+                                 </Grid>
+                                 <Grid item sm={3} >
+                                     
+                                    <Button variant="contained" onClick={() => {
+                                        if(answer ==="72m^3" && answer2 ==="140km^2/s"){
+                                            handleChangeCheckbox()
+                                            setToggle("")
+                                        }else{
+                                            alert("Wrong answer")
+                                        }
+
+                                        
+                                    }}>
+                                        Submit
+                                    </Button>
+                                 </Grid>
+
+                            </Grid>
                             </Paper>
                         </Grid>
                         <Grid item sm={6}>
@@ -610,7 +643,13 @@ const Chapter = () =>{
                                     id="standard-textarea"
                                     label="Note Title:"
                                     placeholder=""
-                                    onChange={handleChangeTextArea}
+                                    value={noteTitle}
+                                    onChange={(evt)=>{
+
+                                    setNoteTitle(evt.target.value)
+
+                                   
+                                    }}
                                     multiline
                                     className={classes.courseNotes}
 
@@ -639,6 +678,13 @@ const Chapter = () =>{
                                     className={classes.margin}
                                     defaultValue=""
                                     inputProps={{ 'aria-label': 'naked' }}
+                                    value={noteBody}
+                                    onChange={(evt)=>{
+
+                                    setNoteBody(evt.target.value)
+
+                                    
+                                    }}
                                     multiline
                                     className={classes.courseNotes2}
                                     style={{height:50}}
@@ -654,6 +700,19 @@ const Chapter = () =>{
                             <Grid conatiner>
                                 <Grid item>
 
+                                </Grid>
+                            </Grid>
+                            <Grid container>
+                                <Grid item sm={9}>
+
+                                </Grid>
+                                <Grid item sm={3}>
+                                    <Button variant="contained" onClick={() => {
+                                      alert(noteBody)
+                                      alert(noteTitle)
+                                    }}>
+                                        Submit
+                                    </Button>
                                 </Grid>
                             </Grid>
                             </Paper>
