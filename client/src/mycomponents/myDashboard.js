@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 //import AppBar from "@material-ui/core/AppBar";
 import AppBar from '@material-ui/core/AppBar';
+import RandomChart from "./RandomChart"
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -37,6 +38,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import Production from '@material-ui/icons/Build'
+import NewTable from "./newTable"
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
@@ -85,6 +87,7 @@ import {
   ValueAxis,
   BarSeries,
   LineSeries,
+  PieSeries,
   Legend,
   Title,
 } from '@devexpress/dx-react-chart-material-ui';
@@ -345,8 +348,25 @@ const Mydashboard = (props) => {
                       { month: 'Production', sale: 150, total: 7500 },
                     ],
                   };
+
                 
                 const { data: chartData } = dataObject;
+
+
+                const dataObject2 ={
+                  data2 : [
+                    { country: 'Russia', area: 12 },
+                    { country: 'Canada', area: 7 },
+                    { country: 'USA', area: 7 },
+                    { country: 'China', area: 7 },
+                    { country: 'Brazil', area: 6 },
+                    { country: 'Australia', area: 5 },
+                    { country: 'India', area: 2 },
+                    { country: 'Others', area: 55 },
+                  ]
+                }
+
+                const {data2: chartData2} = dataObject2
                   //----------------------------------
 
 
@@ -858,39 +878,86 @@ const Mydashboard = (props) => {
 
                               </Grid>
                            </Grid>
+
+
+                           <Grid container>
+                                    <Grid item sm={9}>
+                                              <Grid container>
+                                                  <Grid item sm={6}>
+                                                      <Paper className={classes.chart3}>
+                                                        <Chart
+                                                          data={chartData}
+                                                        >
+                                                          <ValueScale name="sale" />
+                                                          <ValueScale name="total" />
+
+                                                          <ArgumentAxis />
+                                                          <ValueAxis scaleName="sale" showGrid={false} showLine showTicks />
+                                                          <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
+
+                                                          <BarSeries
+                                                            name="Energy"
+                                                            valueField="sale"
+                                                            argumentField="month"
+                                                            scaleName="sale"
+                                                          />
+
+                                                        
+                                                          <Title
+                                                            text="Energy Use per Unit"
+                                                            textComponent={TitleText}
+                                                          />
+
+                                                          <Legend />
+                                                        </Chart>
+                                                      </Paper>
+                                                  </Grid>
+                                                  <Grid item sm={5} style={{marginLeft:"50px"}}>
+                                                      <Paper className={classes.chart3}>
+                                                        <Chart
+                                                          data={chartData2}
+                                                        >
+                                                          
+                                                         
+
+                                                          <PieSeries
+                                                            valueField="area"
+                                                            argumentField="country"
+                                                          />
+
+                                                        
+                                                          <Title
+                                                            text="Area of Countries"
+                                                          />
+
+                                                          <Legend />
+                                                        </Chart>
+                                                      </Paper>
+
+                                                  </Grid>
+
+                                              </Grid>
+                                              <Grid container>
+                                                  <Grid item sm={12}>
+                                                      <NewTable />
+                                                  </Grid>
+                                              </Grid>
+
+                                    </Grid>
+                                    <Grid item sm={3}>
+                                        <Paper elevation={3} style={{height:922,marginTop:"50px",marginLeft:"10px"}}>
+                                          Hello World
+                                        </Paper>
+                                    </Grid>
+
+                           </Grid>
                             
                             
                             
                               {/* 3rd chart */}
-                                <Paper className={classes.chart3}>
-                                  <Chart
-                                    data={chartData}
-                                  >
-                                    <ValueScale name="sale" />
-                                    <ValueScale name="total" />
-
-                                    <ArgumentAxis />
-                                    <ValueAxis scaleName="sale" showGrid={false} showLine showTicks />
-                                    <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
-
-                                    <BarSeries
-                                      name="Energy"
-                                      valueField="sale"
-                                      argumentField="month"
-                                      scaleName="sale"
-                                    />
-
-                                  
-                                    <Title
-                                      text="Energy Use per Unit"
-                                      textComponent={TitleText}
-                                    />
-
-                                    <Legend />
-                                  </Chart>
-                                </Paper>
+                               
                               {/*3rd chart end */}
-                              {JSON.stringify(user)
+                              {/*JSON.stringify(user)*/}
                               
                              
                               
