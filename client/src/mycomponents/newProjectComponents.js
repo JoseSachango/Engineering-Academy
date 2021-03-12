@@ -39,11 +39,26 @@ export default function BasicTable(props) {
   const [moleFraction, setMoleFraction] = useState()
   const [pressure, setPressure] = useState()
   const [temperature,setTemperature] = useState()
+  const [projectName,setProjectName] = useState()
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
+          <TableRow>
+              <TableCell>
+                  Project Name:
+              </TableCell>
+              <TableCell>
+                        <input
+                        value={row.projectName}
+                        onChange={(evt) => {
+                            setProjectName(evt.target.value)
+                            row.moleFraction = evt.target.value
+                            }}
+                        />
+              </TableCell>
+          </TableRow>
           <TableRow>
             <TableCell>Component</TableCell>
             <TableCell align="right">Mole Fraction</TableCell>
@@ -107,7 +122,7 @@ export default function BasicTable(props) {
 
            
 
-            axios.post("/api/unitTable",{unitName:props.unitname,rows:rows}).then(results=>{
+            axios.post("/api/newProject",{unitName:props.unitname,rows:rows}).then(results=>{
                 console.log("The data was successfully posted to the endpoint /api/unitTable/:id :",results)
 
                
