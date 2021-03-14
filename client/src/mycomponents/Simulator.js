@@ -1020,12 +1020,12 @@ const [value, setValue] = React.useState(0);
                                 aria-label="scrollable auto tabs example"
                                 >
                                 <Tab label="Specifications" {...a11yProps(0)} />
-                                <Tab label="Calculating Pressure" {...a11yProps(1)} />
+                                {/*<Tab label="Calculating Pressure" {...a11yProps(1)} />
                                 <Tab label="Calculating Enthalpy" {...a11yProps(2)} />
                                 <Tab label="Calculating Physical Properties" {...a11yProps(3)} />
                                 <Tab label="Item Five" {...a11yProps(4)} />
                                 <Tab label="Item Six" {...a11yProps(5)} />
-                                <Tab label="Item Seven" {...a11yProps(6)} />
+                                <Tab label="Item Seven" {...a11yProps(6)} />*/}
                                 </Tabs>
                             </AppBar>
                             <TabPanel value={value} index={0}>
@@ -1044,7 +1044,7 @@ const [value, setValue] = React.useState(0);
                                            
                                 </Grid>
                             </TabPanel>
-                            <TabPanel value={value} index={1}>
+                            {/*<TabPanel value={value} index={1}>
                                Raults Law
                             </TabPanel>
                             <TabPanel value={value} index={2}>
@@ -1061,7 +1061,7 @@ const [value, setValue] = React.useState(0);
                             </TabPanel>
                             <TabPanel value={value} index={6}>
                                 Item Seven
-                            </TabPanel>
+                            </TabPanel>*/}
                         </div>
                         {/*End of Tabs for property data */}
 

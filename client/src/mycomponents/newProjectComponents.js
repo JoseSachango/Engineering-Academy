@@ -39,7 +39,7 @@ export default function BasicTable(props) {
   const [moleFraction, setMoleFraction] = useState()
   const [pressure, setPressure] = useState()
   const [temperature,setTemperature] = useState()
-  const [projectName,setProjectName] = useState()
+  const [projectName,setProjectName] = useState("")
 
   return (
     <TableContainer component={Paper}>
@@ -51,10 +51,10 @@ export default function BasicTable(props) {
               </TableCell>
               <TableCell>
                         <input
-                        value={row.projectName}
+                        value={projectName}
                         onChange={(evt) => {
                             setProjectName(evt.target.value)
-                            row.moleFraction = evt.target.value
+                            
                             }}
                         />
               </TableCell>
@@ -121,14 +121,14 @@ export default function BasicTable(props) {
             <Button variant="contained" onClick={() => { 
 
            
-
-            axios.post("/api/newProject",{unitName:props.unitname,rows:rows}).then(results=>{
-                console.log("The data was successfully posted to the endpoint /api/unitTable/:id :",results)
+               
+            axios.post("/api/newProject",{newProjectName:projectName,components:rows}).then(results=>{
+                console.log("The data was successfully posted to the endpoint /api/newProject :",results)
 
                
             
             }).catch(err=>{
-                console.log("There was an error with the post request to the /api/unitTable/:id endpoint: ",err)
+                console.log("There was an error with the post request to the /api/newProject endpoint: ",err)
             })
             }}>
             Submit

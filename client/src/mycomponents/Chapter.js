@@ -616,7 +616,7 @@ const Chapter = () =>{
                                  <Grid item sm={3} >
                                      
                                     <Button variant="contained" onClick={() => {
-                                        if(answer ==="72m^3" && answer2 ==="140km^2/s"){
+                                        if(answer ==="1" && answer2 ==="1"){
                                             handleChangeCheckbox()
                                             setToggle("")
                                         }else{

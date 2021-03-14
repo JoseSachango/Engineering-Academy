@@ -65,6 +65,28 @@ export default () => {
                 </div>
             </Button>           
         </Grid>
+        <Grid container>
+            <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
+                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"output", "name":"Condenser", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
+                    Condenser
+                </div>
+            </Button>           
+        </Grid>
+        <Grid container>
+            <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
+                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"output", "name":"Reboiler", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
+                    Reboiler
+                </div>
+            </Button>           
+        </Grid>
+        <Grid container>
+            <Button variant="outlined" size="small" color="primary" style={{marginBottom:"10px", marginLeft:"10px", marginRight:"5px"}} >
+                <div className="dndnode output" onDragStart={(event) => onDragStart(event, `{"type":"default", "name":"Furnace", "sourcePosition": "right", "targetPosition": "left"}`)} draggable>
+                    Furnace
+                </div>
+            </Button>           
+        </Grid>
+
 
 
 

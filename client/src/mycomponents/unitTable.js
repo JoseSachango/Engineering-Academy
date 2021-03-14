@@ -58,9 +58,25 @@ const invoiceSubtotal = subtotal(rows);
 const invoiceTaxes = TAX_RATE * invoiceSubtotal;
 const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
+
+
 export default function SpanningTable(props) {
   const classes = useStyles();
 
+
+    const createTableCell = (value,setState) =>{
+        return (
+            <TableCell align="right">
+                        <input
+                        value={value}
+                        onChange={(evt) => {
+                            setState(evt.target.value)
+                            rows.molesout = evt.target.value
+                            }}
+                        />
+              </TableCell>
+        )
+    } 
 
   //----------------------------------------------------------------------------------------------
   const [molesIn,setMolesIn] = React.useState(0)
@@ -181,7 +197,8 @@ export default function SpanningTable(props) {
                         />
               </TableCell>
               
-              <TableCell align="right">
+              {createTableCell(row.utilities,setUtilities)}
+              {/*<TableCell align="right">
                         <input
                         value={row.utilities}
                         onChange={(evt) => {
@@ -189,7 +206,7 @@ export default function SpanningTable(props) {
                             row.utilities = evt.target.value
                             }}
                         />
-              </TableCell>
+              </TableCell>*/}
               <TableCell align="right">
                         <input
                         value={row.cost}
@@ -204,16 +221,18 @@ export default function SpanningTable(props) {
             </TableRow>
           ))}
 
+            {//TODO: Change the values for net energy and clean up code
+            }                      
           <TableRow>
             <TableCell rowSpan={4} colSpan={7}/>
             
             <TableCell colSpan={2}>Net Energy (Kj)</TableCell>
             <TableCell align="right">
                         <input
-                        value={rows.enthalpyin}
+                        value={""}
                         onChange={(evt) => {
                             setEnthalpyIn(evt.target.value)
-                            rows.enthalpyin = evt.target.value
+                            
                             }}
                         />
             </TableCell>
@@ -223,19 +242,19 @@ export default function SpanningTable(props) {
             <TableCell>Total Cost (USD)</TableCell>
             <TableCell align="right">
                         <input
-                        value={rows.enthalpyin}
+                        value={"row.enthalpyin"}
                         onChange={(evt) => {
                             setEnthalpyIn(evt.target.value)
-                            rows.enthalpyin = evt.target.value
+                            
                             }}
                         />
             </TableCell>
             <TableCell align="right">
                         <input
-                        value={rows.enthalpyin}
+                        value={"row.enthalpyin"}
                         onChange={(evt) => {
                             setEnthalpyIn(evt.target.value)
-                            rows.enthalpyin = evt.target.value
+                            
                             }}
                         />
             </TableCell>
@@ -245,10 +264,10 @@ export default function SpanningTable(props) {
             <TableCell colSpan={2}>Total</TableCell>
             <TableCell align="right">
                         <input
-                        value={rows.enthalpyin}
+                        value={"row.enthalpyin"}
                         onChange={(evt) => {
                             setEnthalpyIn(evt.target.value)
-                            rows.enthalpyin = evt.target.value
+                           
                             }}
                         />
             </TableCell>
@@ -260,7 +279,7 @@ export default function SpanningTable(props) {
             <Button variant="contained" onClick={() => { 
 
                 console.log("This is props.unitname: ",props.unitname)
-                console.log("This is the current rows: ",rows)
+               
 
                 axios.post("/api/unitTable",{unitName:props.unitname,rows:rows}).then(results=>{
                     console.log("The data was successfully posted to the endpoint /api/unitTable/:id :",results)

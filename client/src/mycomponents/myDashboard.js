@@ -230,6 +230,9 @@ const Mydashboard = (props) => {
 
     const {loginWithRedirect,logout,isAuthenticated,user} = useAuth0();
 
+
+    
+
     
 
 
@@ -558,12 +561,51 @@ const Mydashboard = (props) => {
           
             const container = window !== undefined ? () => window().document.body : undefined;
             console.log(sidebarIcons.Book)
+
+            if(isAuthenticated){
+              axios.get("/api/User"+user.name).then(results=>{
+                console.log("The axios get request to the /api/User endpoint was made succefully: ",results)
+                }).catch(err=>{
+                  console.log("There was an error with the axios get request to the /api/User endpoint: ",err)
+
+                    axios.post("/api/User",{user:{name:user.name,userId:user.sub}}).then(results=>{
+                      console.log("The data was successfully posted to the endpoint /api/User :",results)
+
+                    
+                  
+                    }).catch(err=>{
+                        console.log("There was an error with the post request to the /api/User endpoint: ",err)
+                    })
+
+                })
+            }
+
+            
             return (
                 
                 isAuthenticated&&(
                     
                 <div className={classes.root}>
-                  
+                    {
+                      /*axios.get("/api/User").then(results=>{console.log(results)}).catch(err=>{console.log(err)})*/
+                      
+                      /*
+                      axios.get("/api/User"+"hello").then(results=>{
+                      console.log("The axios get request to the /api/User endpoint was made succefully: ",results)
+                      }).catch(err=>{
+                        console.log("There was an error with the axios get request to the /api/User endpoint: ",err)
+
+                          axios.post("/api/User",{user:"user",units:[],streams:[],notes:[],newProjects:[]}).then(results=>{
+                            console.log("The data was successfully posted to the endpoint /api/User :",results)
+
+                          
+                        
+                          }).catch(err=>{
+                              console.log("There was an error with the post request to the /api/User endpoint: ",err)
+                          })
+
+                      })*/
+                    }
                     <CssBaseline />
                     <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
@@ -946,7 +988,7 @@ const Mydashboard = (props) => {
                                     </Grid>
                                     <Grid item sm={3}>
                                         <Paper elevation={3} style={{height:922,marginTop:"50px",marginLeft:"10px"}}>
-                                          Hello World
+                                          
                                         </Paper>
                                     </Grid>
 
@@ -957,11 +999,11 @@ const Mydashboard = (props) => {
                               {/* 3rd chart */}
                                
                               {/*3rd chart end */}
-                              {/*JSON.stringify(user)*/}
+                              {JSON.stringify(user)}
                               
                              
                               
-                              }
+                              
                             
                          
                         </div>

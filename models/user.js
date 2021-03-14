@@ -25,7 +25,14 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Notes"
         }
+    ],
+    newProject: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "newProject"
+        }
     ]
+        
         
 
 })

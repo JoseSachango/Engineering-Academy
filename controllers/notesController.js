@@ -3,39 +3,36 @@ const db = require("../models");
 // Defining methods for the booksController
 module.exports = {
   findAll: function(req, res) {
-    db.User
+    db.unitTable
       .find(req.query)
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  getUser: function(req, res) {
-
-    console.log("This is the paramsId for the axios get request: ",req.params.id)
-    
-    db.User
+  getUnit: function(req, res) {
+    db.unitTable
       .findOne({
-        user:{name:req.params.id } 
+        unitName: req.params.id
       })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  createUser: function(req, res) {
+  createUnit: function(req, res) {
 
     console.log("This is the object that comes in with the body: ",req.body)
-    db.User
+    db.unitTable
       .create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
-    db.User
+    db.unitTable
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
-    db.User
+    db.unitTable
       .findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
