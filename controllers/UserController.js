@@ -12,10 +12,10 @@ module.exports = {
   getUser: function(req, res) {
 
     console.log("This is the paramsId for the axios get request: ",req.params.id)
-    
+
     db.User
       .findOne({
-        user:{name:req.params.id } 
+        user:{userId:req.params.id } 
       })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));

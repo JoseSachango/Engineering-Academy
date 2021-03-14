@@ -563,7 +563,7 @@ const Mydashboard = (props) => {
             console.log(sidebarIcons.Book)
 
             if(isAuthenticated){
-              axios.get("/api/User"+user.name).then(results=>{
+              axios.get("/api/User/"+user.sub).then(results=>{
                 console.log("The axios get request to the /api/User endpoint was made succefully: ",results)
                 }).catch(err=>{
                   console.log("There was an error with the axios get request to the /api/User endpoint: ",err)
