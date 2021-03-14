@@ -516,7 +516,7 @@ const Mydashboard = (props) => {
                             </>
                         ): text==="Simulator" ?
                         (
-                            <ListItem button key={text} component={Link} to="/Simulator" >
+                            <ListItem button key={text} component={Link} to="/NewProject" >
                                 
                                 <ListItemIcon>{sidebarIcons[text] ?  sidebarIcons[text] : null}</ListItemIcon>
 
@@ -563,10 +563,25 @@ const Mydashboard = (props) => {
             console.log(sidebarIcons.Book)
 
             if(isAuthenticated){
-              axios.get("/api/User/"+user.sub).then(results=>{
-                console.log("The axios get request to the /api/User endpoint was made succefully: ",results)
+
+              axios.get("/api/User/",{name:user.name,userId:user.sub}).then(results=>{
+                console.log("The axios get request to the /api/User/:id endpoint was made succefully: ",results)
+                console.log("This is the length of results data: ", results.data.length)
+                if(results.data.length <1) {
+                  axios.post("/api/User",{user:{name:user.name,userId:user.sub}}).then(results=>{
+                    console.log("The data was successfully posted to the endpoint /api/User :",results)
+
+                  
+                
+                  }).catch(err=>{
+                      console.log("There was an error with the post request to the /api/User endpoint: ",err)
+                  })
+                }
+                //axios.get("/api/User/").then(results2=>{console.log("this is all of the users: ",results2)}).catch(err=>{console.log('There was an error')})
                 }).catch(err=>{
+
                   console.log("There was an error with the axios get request to the /api/User endpoint: ",err)
+                  
 
                     axios.post("/api/User",{user:{name:user.name,userId:user.sub}}).then(results=>{
                       console.log("The data was successfully posted to the endpoint /api/User :",results)
@@ -578,6 +593,7 @@ const Mydashboard = (props) => {
                     })
 
                 })
+
             }
 
             
@@ -705,6 +721,11 @@ const Mydashboard = (props) => {
                     <div className={classes.toolbar} />
                         <div>
                           
+                           <Grid container>
+                              <Typography variant="h4"  style={{marginBottom:"20px", color: grey[600]}} gutterBottom>
+                                {"Project Name"}
+                              </Typography>
+                           </Grid>
                            <Grid container>
                              <Grid item sm={4}>
                                     <Grid container>

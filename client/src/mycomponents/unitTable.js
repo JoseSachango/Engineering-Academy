@@ -280,7 +280,7 @@ export default function SpanningTable(props) {
 
                 console.log("This is props.unitname: ",props.unitname)
                
-
+                
                 axios.post("/api/unitTable",{unitName:props.unitname,rows:rows}).then(results=>{
                     console.log("The data was successfully posted to the endpoint /api/unitTable/:id :",results)
 

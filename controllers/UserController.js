@@ -5,19 +5,23 @@ module.exports = {
   findAll: function(req, res) {
     db.User
       .find(req.query)
-      .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   getUser: function(req, res) {
 
-    console.log("This is the paramsId for the axios get request: ",req.params.id)
+    //console.log("This is the paramsId for the axios get request: ",req.params.id)
+    console.log("This is the req.query: ",req.query)
+    console.log("This is the body of the request to the user endpoint: ",req.body)
 
     db.User
       .findOne({
-        user:{userId:req.params.id } 
+        user:req.body
       })
-      .then(dbModel => res.json(dbModel))
+      .then(dbUser => {
+        console.log("The findOne method was succesful here is the data: ",dbUser)
+        res.json(dbUser)
+      })
       .catch(err => res.status(422).json(err));
   },
   createUser: function(req, res) {

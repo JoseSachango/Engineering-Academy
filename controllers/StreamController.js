@@ -20,7 +20,8 @@ module.exports = {
   create: function(req, res) {
     db.Streams
       .create(req.body)
-      .then(dbModel => res.json(dbModel))
+      .then(({_id})=> {db.NewProject.findOneAndUpdate({},{$push:{streams:_id}},{new:true})})
+      .then(dbNewProject => res.json(dbNewProject))
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {

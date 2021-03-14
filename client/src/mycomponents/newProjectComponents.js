@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from "axios"
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 
@@ -42,7 +43,11 @@ export default function BasicTable(props) {
   const [projectName,setProjectName] = useState("")
 
   return (
-    <TableContainer component={Paper}>
+    <>
+    <Typography variant="h3" component="h6" gutterBottom>
+        Create Project
+    </Typography>
+    <TableContainer component={Paper} elevation={5}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -138,5 +143,6 @@ export default function BasicTable(props) {
         </TableBody>
       </Table>
     </TableContainer>
+    </>
   );
 }

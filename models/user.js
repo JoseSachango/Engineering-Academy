@@ -7,19 +7,7 @@ const userSchema = new Schema({
         userId: String
     },
 
-    units: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "unitTable"
-        }
-    ],
-
-    streams: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Streams"
-        }
-    ],
+   
     notes: [
         {
             type: Schema.Types.ObjectId,

@@ -23,7 +23,7 @@ module.exports = {
     db.NewProject
       .create(req.body)
       .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { newProject: _id } }, { new: true }))
-      .then(dbModel => res.json(dbModel))
+      .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
