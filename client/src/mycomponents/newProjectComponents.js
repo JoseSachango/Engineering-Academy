@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +11,9 @@ import Paper from '@material-ui/core/Paper';
 import axios from "axios"
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { Link } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+
 
 
 
@@ -35,14 +39,19 @@ const rows = [
 
 export default function BasicTable(props) {
   const classes = useStyles();
+  const {loginWithRedirect,logout,isAuthenticated,user} = useAuth0();
+
 
   const [component, setComponent] = useState()
   const [moleFraction, setMoleFraction] = useState()
   const [pressure, setPressure] = useState()
   const [temperature,setTemperature] = useState()
   const [projectName,setProjectName] = useState("")
+  const [toggle,setToggle] = useState()
 
   return (
+    isAuthenticated&&(
+
     <>
     <Typography variant="h3" component="h6" gutterBottom>
         Create Project
@@ -127,9 +136,10 @@ export default function BasicTable(props) {
 
            
                
-            axios.post("/api/newProject",{newProjectName:projectName,components:rows}).then(results=>{
+            axios.post("/api/newProject",{newProjectName:projectName,components:rows,name:user.name,userId:user.sub}).then(results=>{
                 console.log("The data was successfully posted to the endpoint /api/newProject :",results)
 
+                setToggle(1)
                
             
             }).catch(err=>{
@@ -143,6 +153,15 @@ export default function BasicTable(props) {
         </TableBody>
       </Table>
     </TableContainer>
+    <Grid container justify="center" style={{marginTop:"50px"}}>
+      {toggle&&(
+        <Button variant contained component={Link} to="/Simulator">
+          Continue
+        </Button>
+      )}
+    </Grid>
     </>
+
+    )
   );
 }

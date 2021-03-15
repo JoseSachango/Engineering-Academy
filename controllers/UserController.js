@@ -13,16 +13,26 @@ module.exports = {
     //console.log("This is the paramsId for the axios get request: ",req.params.id)
     console.log("This is the req.query: ",req.query)
     console.log("This is the body of the request to the user endpoint: ",req.body)
+    console.log("This is the req.params.id: ",req.params.id)
 
     db.User
       .findOne({
-        user:req.body
+        user:{name:JSON.parse(req.params.id).name,userId:JSON.parse(req.params.id).userId}
+      }, (err,results) =>{
+        if(err){
+
+        }else {
+          console.log("The getUser controller is working: ",results)
+          return res.json(results)
+        }
       })
+      //.populate("newProject")
+      /*
       .then(dbUser => {
         console.log("The findOne method was succesful here is the data: ",dbUser)
         res.json(dbUser)
       })
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err));*/
   },
   createUser: function(req, res) {
 

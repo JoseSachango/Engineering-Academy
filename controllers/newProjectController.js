@@ -21,9 +21,12 @@ module.exports = {
 
     console.log("This is the object that comes in with the body: ",req.body)
     db.NewProject
-      .create(req.body)
-      .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { newProject: _id } }, { new: true }))
-      .then(dbUser => res.json(dbUser))
+      .create({newProjectName:req.body.newProjectName,components:req.body.components})
+      .then(({ _id }) => db.User.findOneAndUpdate({user:{name:req.body.name,userId:req.body.userId}}, { $push: { newProject: _id } }, { new: true }))
+      .then(dbUser => {
+        console.log("The update to the users collection was made successfully: ",dbUser)
+        res.json(dbUser)
+      })
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {

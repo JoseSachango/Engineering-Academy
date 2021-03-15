@@ -251,6 +251,7 @@ const Mydashboard = (props) => {
             const [mobileOpen, setMobileOpen] = React.useState(false);
             const [open, setOpen] = React.useState(false);
             const [valueTabs, setValueTabs] = React.useState(0);
+            const [projectName,setProjectName] = React.useState("")
 
             const handleChangeTabs = (event, newValue) => {
               setValueTabs(newValue);
@@ -564,10 +565,11 @@ const Mydashboard = (props) => {
 
             if(isAuthenticated){
 
-              axios.get("/api/User/",{name:user.name,userId:user.sub}).then(results=>{
-                console.log("The axios get request to the /api/User/:id endpoint was made succefully: ",results)
+              axios.get("/api/User/"+JSON.stringify({name:user.name,userId:user.sub})).then(results=>{
+                console.log("The axios get request to the /api/User endpoint was made succefully: ",results)
                 console.log("This is the length of results data: ", results.data.length)
                 if(results.data.length <1) {
+                  
                   axios.post("/api/User",{user:{name:user.name,userId:user.sub}}).then(results=>{
                     console.log("The data was successfully posted to the endpoint /api/User :",results)
 
@@ -577,20 +579,26 @@ const Mydashboard = (props) => {
                       console.log("There was an error with the post request to the /api/User endpoint: ",err)
                   })
                 }
+                /*
+                if(results.data[0].newProject.length <1){
+                  setProjectName("Project")
+                }else if(results.data[0].newProject.length >=1) {
+                  setProjectName(results.data[0].newProject)
+                }*/
                 //axios.get("/api/User/").then(results2=>{console.log("this is all of the users: ",results2)}).catch(err=>{console.log('There was an error')})
                 }).catch(err=>{
 
                   console.log("There was an error with the axios get request to the /api/User endpoint: ",err)
                   
 
-                    axios.post("/api/User",{user:{name:user.name,userId:user.sub}}).then(results=>{
+                    /*axios.post("/api/User",{user:{name:user.name,userId:user.sub}}).then(results=>{
                       console.log("The data was successfully posted to the endpoint /api/User :",results)
 
                     
                   
                     }).catch(err=>{
                         console.log("There was an error with the post request to the /api/User endpoint: ",err)
-                    })
+                    })*/
 
                 })
 
@@ -723,7 +731,7 @@ const Mydashboard = (props) => {
                           
                            <Grid container>
                               <Typography variant="h4"  style={{marginBottom:"20px", color: grey[600]}} gutterBottom>
-                                {"Project Name"}
+                                {projectName}
                               </Typography>
                            </Grid>
                            <Grid container>
