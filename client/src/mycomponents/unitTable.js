@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import { useAuth0 } from "@auth0/auth0-react";
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -47,20 +48,64 @@ function subtotal(items) {
   return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-const rows = [
-  createRow('Naphta', 0, 0, 0,0,0,0,0,0,0),
-  createRow('Kerosene', 0, 0, 0,0,0,0,0,0,0),
-  createRow('Diesel', 0, 0, 0,0,0,0,0,0,0),
-  createRow('Residue', 0, 0, 0,0,0,0,0,0,0),
-];
 
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+
+
+
+
 
 
 
 export default function SpanningTable(props) {
+
+
+
+  const {loginWithRedirect,logout,isAuthenticated,user} = useAuth0();
+
+  const [rows,setRows] = React.useState([
+    
+      createRow('', 0, 0, 0,0,0,0,0,0,0),
+      
+    
+  ])
+
+  const rows2 = []
+
+  if(isAuthenticated){
+    axios.get("/api/User/"+JSON.stringify({name:user.name,userId:user.sub})).then(results=>{
+      //console.log("This is the user data: ", results)
+      console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1].components)
+      var i;
+      for(i=0;i<results.data.newProject[results.data.newProject.length-1].components.length;i++){
+        rows2.push(createRow(results.data.newProject[results.data.newProject.length-1].components[i].component,0, 0, 0,0,0,0,0,0,0))
+      }
+
+      console.log("This is rows2: ",rows2)
+      setRows(rows2)
+      
+      
+    })
+    .catch(err=>{
+      console.log("There was an err with the request: ",err)
+    })
+  }
+
+  /*
+  var rows = [
+    createRow('Naphta', 0, 0, 0,0,0,0,0,0,0),
+    createRow('Kerosene', 0, 0, 0,0,0,0,0,0,0),
+    createRow('Diesel', 0, 0, 0,0,0,0,0,0,0),
+    createRow('Residue', 0, 0, 0,0,0,0,0,0,0),
+  ];*/
+
+
+
+  const invoiceSubtotal = subtotal(rows);
+  const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+  const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+
+
+
   const classes = useStyles();
 
 

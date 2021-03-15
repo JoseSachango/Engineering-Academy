@@ -20,13 +20,13 @@ module.exports = {
         user:{name:JSON.parse(req.params.id).name,userId:JSON.parse(req.params.id).userId}
       }, (err,results) =>{
         if(err){
-
+          console.log("There was an error with the findOne method: ",err)
         }else {
           console.log("The getUser controller is working: ",results)
           return res.json(results)
         }
       })
-      //.populate("newProject")
+      .populate("newProject")
       /*
       .then(dbUser => {
         console.log("The findOne method was succesful here is the data: ",dbUser)

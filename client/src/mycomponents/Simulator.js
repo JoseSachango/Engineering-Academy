@@ -10,6 +10,7 @@ import ReactFlow, {
   MiniMap
 } from 'react-flow-renderer';
 import UnitTable from "./unitTable"
+
 import Sidebar from './sidebar';
 import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -317,7 +318,7 @@ const initialElements = [
 
 const Simulation = (props) => {
 
-    const {loginWithRedirect,logout,isAuthenticated} = useAuth0();
+    const {loginWithRedirect,logout,isAuthenticated,user} = useAuth0();
 
 
   
@@ -330,6 +331,7 @@ const Simulation = (props) => {
             const [mobileOpen, setMobileOpen] = React.useState(false);
             const [open, setOpen] = React.useState(false);
             const [open2, setOpen2] = React.useState(false);//Second drawer
+            const [projectName,setProjectName] = React.useState()
 
 //-----------------------------------------------------------------------------------------------------------Second drawer code
 const handleDrawerOpen = () => {
@@ -798,6 +800,17 @@ const [value, setValue] = React.useState(0);
 
           
             const container = window !== undefined ? () => window().document.body : undefined;
+
+            if(isAuthenticated){
+              axios.get("/api/User/"+JSON.stringify({name:user.name,userId:user.sub})).then(results=>{
+                console.log("This is the user data: ", results)
+                console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1].newProjectName)
+                setProjectName(results.data.newProject[results.data.newProject.length-1].newProjectName)
+              })
+              .catch(err=>{
+                console.log("There was an err with the request: ",err)
+              })
+            }
            
             return (
                 
@@ -962,7 +975,9 @@ const [value, setValue] = React.useState(0);
                                             style={graphStyles}
                                             
                                         >
-
+                                            <Typography variant="h6" style={{color: grey[600]}}>
+                                              {projectName}
+                                            </Typography>
                                             <Controls />
                                             <MiniMap
                                             nodeColor={(node) => {
