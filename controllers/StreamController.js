@@ -19,9 +19,9 @@ module.exports = {
   },
   create: function(req, res) {
     db.Streams
-      .create(req.body)
-      .then(({_id})=> {db.NewProject.findOneAndUpdate({},{$push:{streams:_id}},{new:true})})
-      .then(dbNewProject => res.json(dbNewProject))
+      .create({unitName:req.body.unitName,streamSource:req.body.streamSource,streamTarget:req.body.streamTarget,rows:req.body.rows})
+      .then(({_id})=> {db.unitTable.findOneAndUpdate({},{$push:{streams:_id}},{new:true})})
+      .then(dbUnit => res.json(dbUnit))
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {

@@ -16,6 +16,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios"
 import Button from '@material-ui/core/Button';
+import { useAuth0 } from "@auth0/auth0-react";
 
 //----------------------------------------------------------------------------------------------Streams Table Information
 const useStyles = makeStyles({
@@ -42,27 +43,55 @@ const useStyles = makeStyles({
 
 
   
-  const rowsStreams = [
-    createData("props", 0, 0, 0, 0, 0),
-    createData("props", 0, 0, 0, 0, 0),
-    createData('Eclair', 0, 0, 0, 0, 0),
-    createData('Cupcake', 0, 0, 0, 0, 0),
-    createData('Gingerbread', 0, 0, 0, 0, 0),
-  ];
+  
   
 
 //---------------------------------------------------------------------------------------------Streams table infromation
 
 export default function StreamsTable(props) {
 
+  const {loginWithRedirect,logout,isAuthenticated,user} = useAuth0();
+
+
+  
 
 const [streamsId,setStreamsId] = useState()
   const [streamsMols,setStreamsMols] = useState()
   const [streamsEnthalpy,setStreamsEnthalpy] =  useState()
   const [streamsPressure,setStreasmsPressure] = useState()
   const [streamsTemperature,setStreamsTemperature] = useState()
+  const [rowsStreams,setRowsStreams] = useState(
+    [
+      createData("", 0, 0, 0, 0, 0),
+      createData("", 0, 0, 0, 0, 0),
+      createData('', 0, 0, 0, 0, 0),
+      createData('', 0, 0, 0, 0, 0),
+      createData('', 0, 0, 0, 0, 0),
+    ]
+  )
 
+    
+  const rowsStreams2 = []
 
+  if(isAuthenticated){
+    axios.get("/api/User/"+JSON.stringify({name:user.name,userId:user.sub})).then(results=>{
+      //console.log("This is the user data: ", results)
+      //console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1])
+      /*
+      var i;
+      for(i=0;i<results.data.newProject[results.data.newProject.length-1].components.length;i++){
+        rowsStreams2.push(createRow(results.data.newProject[results.data.newProject.length-1].components[i].component,0, 0, 0,0,0,0,0,0,0))
+      }
+
+      console.log("This is rows2: ",rowsStreams2)
+      setRowsStreams2(rowsStreams2)*/
+      
+      
+    })
+    .catch(err=>{
+      console.log("There was an err with the request: ",err)
+    })
+  }
     
   
 
@@ -144,7 +173,7 @@ const [streamsId,setStreamsId] = useState()
 
          
 
-            axios.post("/api/Streams",{unitName:props.unitname,rows:rowsStreams}).then(results=>{
+            axios.post("/api/Streams",{unitName:props.unitname,rows:rowsStreams,projectName:props.project,source:props.source,target:props.target}).then(results=>{
                 console.log("The data was successfully posted to the endpoint /api/Streams :",results)
 
             }).catch(err=>{

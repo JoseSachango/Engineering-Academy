@@ -379,6 +379,27 @@ const handleDrawerOpen = () => {
 
     
     console.log("These are all the elements:  ",elements)
+
+
+    axios.post("/api/Streams",{unitName:JSON.parse(params.sourceHandle).label,streamSource:params.source,streamTarget:params.target,rows:[]}).then(results=>{
+      console.log("The data was successfully posted to the endpoint /api/unitTable/:id :",results)
+
+      axios.get("/api/Streams/"+JSON.parse(params.sourceHandle).label).then(results2=>{
+          console.log("This is the result from the axios get request to the /api/Streams/:id endpoint: ",results2)
+          
+          
+      }).catch(err2=>{
+          console.log("This is the error message that was recieved from the /api/unitTable endpoint:",err2)
+          
+      })
+
+      
+    }).catch(err=>{
+        console.log("There was an error with the post request to the /api/unitTable/:id endpoint: ",err)
+    })
+
+
+
   };//I Don't understand what's going on here.
 
   //---------------------------------------useEffect for transfering data via edge connect
@@ -402,14 +423,15 @@ const handleDrawerOpen = () => {
   }, [sourceHandle, setElements,targetId]); 
   //---------------------------------------
 
-
+  const [clickedE,setClicked] = React.useState(false)
   //---------------------------------------useEffect for editing data in the node
   const onElementClick = (event, element) => {
-    console.log('This is the click element: ', element)
+    console.log('This is the click element: ', element.data.label)
     //make an axios get request for table information. If no information exists. Make an axios post request with the current rows variable and the element data label
     axios.get("/api/unitTable/"+element.data.label).then(results=>{
-        console.log("This is the result from the axios get request to the /api/unitTable/:id endpoint: ",results)
+        console.log("This is the result from the axios get request to the /api/unitTable/:id endpoint simulator: ",results)
         setUnitTable(results)
+        setClicked(true)
         console.log("This is the uniTable variable: ",unitTable)
         
         
@@ -803,8 +825,8 @@ const [value, setValue] = React.useState(0);
 
             if(isAuthenticated){
               axios.get("/api/User/"+JSON.stringify({name:user.name,userId:user.sub})).then(results=>{
-                console.log("This is the user data: ", results)
-                console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1].newProjectName)
+                //console.log("This is the user data: ", results)
+                //console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1].newProjectName)
                 setProjectName(results.data.newProject[results.data.newProject.length-1].newProjectName)
               })
               .catch(err=>{
@@ -1052,8 +1074,8 @@ const [value, setValue] = React.useState(0);
 
                                     {unitTable && (
                                         <>
-                                        <UnitTable unitname={nodeName} source={sourceStream} target={targetStream}/>
-                                        <StreamsTable unitname={nodeName} source={sourceStream} target={targetStream}/>
+                                        <UnitTable unitname={nodeName} source={sourceStream} target={targetStream} project={projectName} clicked={clickedE} unitTable={unitTable}/>
+                                        <StreamsTable unitname={nodeName} source={sourceStream} target={targetStream} project={projectName}/>
                                         </>
                                     )}
                                            

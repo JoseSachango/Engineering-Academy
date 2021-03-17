@@ -27,6 +27,7 @@ module.exports = {
         }
       })
       .populate("newProject")
+      
       /*
       .then(dbUser => {
         console.log("The findOne method was succesful here is the data: ",dbUser)

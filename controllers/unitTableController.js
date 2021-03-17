@@ -14,6 +14,7 @@ module.exports = {
       .findOne({
         unitName: req.params.id
       })
+      .populate("streams")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

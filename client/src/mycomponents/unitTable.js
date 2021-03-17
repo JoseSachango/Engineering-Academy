@@ -68,20 +68,24 @@ export default function SpanningTable(props) {
       
     
   ])
+  const [typing,setTyping] = React.useState(true)
+  const [clicked,setClicked] = React.useState(true)
 
   const rows2 = []
 
-  if(isAuthenticated){
+  if(typing){
     axios.get("/api/User/"+JSON.stringify({name:user.name,userId:user.sub})).then(results=>{
-      //console.log("This is the user data: ", results)
-      console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1].components)
+      console.log("This is the user data: ", results)
+      //console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1])
       var i;
       for(i=0;i<results.data.newProject[results.data.newProject.length-1].components.length;i++){
         rows2.push(createRow(results.data.newProject[results.data.newProject.length-1].components[i].component,0, 0, 0,0,0,0,0,0,0))
       }
 
-      console.log("This is rows2: ",rows2)
+      //console.log("This is rows2: ",rows2)
       setRows(rows2)
+
+      setTyping(false)
       
       
     })
@@ -90,6 +94,24 @@ export default function SpanningTable(props) {
     })
   }
 
+/*
+if(typing){
+  axios.get("/api/unitTable/"+props.unitname).then(results=>{
+    console.log("Tkjhkjhkjhkj: ", results)
+    //console.log("This is the project name: ",results.data.newProject[results.data.newProject.length-1])
+  
+    
+    //console.log("This is rows2: ",rows2)
+    setRows(results.data.rows)
+
+    setTyping(false)
+    
+   
+  })
+  .catch(err=>{
+    console.log("There was an err with the request: ",err)
+  })
+}*/
   /*
   var rows = [
     createRow('Naphta', 0, 0, 0,0,0,0,0,0,0),
@@ -116,6 +138,7 @@ export default function SpanningTable(props) {
                         value={value}
                         onChange={(evt) => {
                             setState(evt.target.value)
+                            
                             rows.molesout = evt.target.value
                             }}
                         />

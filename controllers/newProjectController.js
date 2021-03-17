@@ -14,6 +14,7 @@ module.exports = {
       .findOne({
         newProjectName: req.params.id
       })
+      .populate("units")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

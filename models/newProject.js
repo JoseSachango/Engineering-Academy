@@ -9,14 +9,7 @@ const newProjectSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "unitTable"
     }
-  ],
-
-  streams: [
-      {
-          type: Schema.Types.ObjectId,
-          ref: "Streams"
-      }
-  ],
+  ]
 });
 
 const newProject = mongoose.model("newProject", newProjectSchema);

@@ -533,7 +533,7 @@ export default function ChemProCourse() {
                       <Grid item sm={7}>
                           <Grid container justify="center" direction="row" alignItems="center">
                             <Typography style={{color: grey[900]}} variant="h5">
-                              . Balances on Transient Processes:
+                              9. Balances on Transient Processes:
                             </Typography>
                           </Grid>
                       </Grid>

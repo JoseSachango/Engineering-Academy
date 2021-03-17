@@ -1028,7 +1028,7 @@ const Mydashboard = (props) => {
                               {/* 3rd chart */}
                                
                               {/*3rd chart end */}
-                              {JSON.stringify(user)}
+                            
                               
                              
                               

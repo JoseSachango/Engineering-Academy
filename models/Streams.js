@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 
 const StreamSchema = new Schema({
   unitName: { type: String },
+  streamSource: {type:String},
+  streamTarget: {type:String},
   rows: Array
 });
 
